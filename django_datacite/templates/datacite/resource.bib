@@ -1,0 +1,11 @@
+@misc{% templatetag openbrace %}{{ resource.identifier.identifier }},
+    authors = {% templatetag openbrace %}{% for creator in resource.creators.all %}{% if creator.given_name and creator.family_name %}{{ creator.family_name }}, {{ creator.given_name }}{% else %}{{ creator.name }}{% endif %}{% if not forloop.last %} and {% endif %}{% endfor %}{% templatetag closebrace %},
+    year = {% templatetag openbrace %}{{ resource.publication_year }}{% templatetag closebrace %},
+    title = {% templatetag openbrace %}{{ resource.title }}{% templatetag closebrace %},
+    version = {% templatetag openbrace %}{{ resource.version }}{% templatetag closebrace %},
+    publisher = {% templatetag openbrace %}{{ resource.publisher }}{% templatetag closebrace %},
+    {% if resource.identifier.identifier_type == 'DOI' %}
+    doi = {% templatetag openbrace %}{{ resource.identifier.identifier }}{% templatetag closebrace %},
+    url = {% templatetag openbrace %}https://doi.org/{{ resource.identifier.identifier }}{% templatetag closebrace %},
+    {% endif %}
+{% templatetag closebrace %}

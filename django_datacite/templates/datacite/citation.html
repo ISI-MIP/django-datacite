@@ -1,0 +1,7 @@
+{% for creator in resource.creators.all %}{% if creator.given_name and creator.family_name %}{{ creator.family_name }}, {{ creator.given_name }}{% else %}{{ creator.name }}{% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}
+({{ resource.publication_year }}):
+{{ resource.title }}.
+{% if resource.cite_version %}Version {{ resource.version }}.{% endif %}
+{% if resource.cite_publisher %}{{ resource.publisher }}.{% endif %}
+{% if resource.cite_resource_type_general %}({{ resource.resource_type_general }}).{% endif %}
+{% if resource.identifier.identifier_type == 'DOI' %}https://doi.org/{{ resource.identifier.identifier }}{% else %}{{ resource.identifier.identifier }}{% endif %}.
