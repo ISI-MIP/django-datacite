@@ -9,6 +9,8 @@
 
     {{ form.as_p }}
 
+    <div class="help">{% trans 'Please provide upload a DataCite JSON file OR provide a URL where a DataCite JSON file is located.' %}</div>
+
     <input type="submit" value="{% trans 'Import' %}" class="danger" name="_send">
     <input type="submit" value="{% trans 'Back' %}" name="_back">
 </form>

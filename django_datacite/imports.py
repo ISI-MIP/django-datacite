@@ -1,4 +1,3 @@
-import json
 import logging
 
 from django.utils.dateparse import parse_date
@@ -10,9 +9,7 @@ from .models import Resource, Title, Description, Creator, Contributor, Subject,
 logger = logging.getLogger(__name__)
 
 
-def import_resource(fp, resource_instance=None):
-    data = json.load(fp)
-
+def import_resource(data, resource_instance=None):
     if resource_instance is None:
         resource_instance = Resource()
 

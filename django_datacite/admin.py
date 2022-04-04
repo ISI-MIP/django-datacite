@@ -1,7 +1,13 @@
+import json
+
+import requests
+
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
+from django.utils.translation import gettext as _
 
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
@@ -107,8 +113,32 @@ class IdentifierForm(forms.ModelForm):
     )
 
 
-class ResourceUploadForm(forms.Form):
-    file = forms.FileField()
+class ImportForm(forms.Form):
+    file = forms.FileField(required=False)
+    url = forms.URLField(required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data['file'] and cleaned_data['url']:
+            raise ValidationError(_('Please provide a file OR a URL.'))
+
+        elif cleaned_data['file']:
+            try:
+                cleaned_data['data'] = json.load(cleaned_data['file'])
+            except json.JSONDecodeError:
+                raise ValidationError(_('Please provide a valid JSON.'))
+
+        elif cleaned_data['url']:
+            response = requests.get(cleaned_data['url'])
+            response.raise_for_status()
+
+            try:
+                cleaned_data['data'] = response.json()
+            except json.JSONDecodeError:
+                raise ValidationError(_('Please provide a valid JSON.'))
+
+        else:
+            raise ValidationError(_('Please provide a file OR a URL.'))
 
 
 # Inlines
@@ -180,37 +210,29 @@ class ResourceAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-            path('import/', self.admin_site.admin_view(self.datecite_resource_import_create),
-                 name='datecite_resource_import_create'),
-            path('<int:pk>/import/', self.admin_site.admin_view(self.datecite_resource_import_update),
-                 name='datecite_resource_import_update'),
+            path('import/', self.admin_site.admin_view(self.datecite_resource_import),
+                 name='datecite_resource_import'),
+            path('<int:pk>/import/', self.admin_site.admin_view(self.datecite_resource_import),
+                 name='datecite_resource_import'),
             ] + super().get_urls()
 
-    def datecite_resource_import_create(self, request):
-        form = ResourceUploadForm(request.POST or None, request.FILES or None)
+    def datecite_resource_import(self, request, pk=None):
+        if pk is not None:
+            resource = get_object_or_404(Resource, id=pk)
+        else:
+            resource = None
+
+        form = ImportForm(request.POST or None, request.FILES or None)
 
         if request.method == 'POST':
             if '_back' in request.POST:
-                return redirect('admin:datacite_resource_list')
+                if pk is not None:
+                    return redirect('admin:datacite_resource_change', object_id=pk)
+                else:
+                    return redirect('admin:datacite_resource_list')
 
             elif '_send' in request.POST and form.is_valid():
-                resource = import_resource(form.cleaned_data['file'])
-                return redirect('admin:datacite_resource_change', object_id=resource.id)
-
-        return render(request, 'admin/datacite/resource/import_form.html', context={
-            'form': form
-        })
-
-    def datecite_resource_import_update(self, request, pk):
-        resource = get_object_or_404(Resource, id=pk)
-        form = ResourceUploadForm(request.POST or None, request.FILES or None)
-
-        if request.method == 'POST':
-            if '_back' in request.POST:
-                return redirect('admin:datacite_resource_change', object_id=resource.id)
-
-            elif '_send' in request.POST and form.is_valid():
-                import_resource(form.cleaned_data['file'], resource)
+                resource = import_resource(form.cleaned_data['data'], resource)
                 return redirect('admin:datacite_resource_change', object_id=resource.id)
 
         return render(request, 'admin/datacite/resource/import_form.html', context={
