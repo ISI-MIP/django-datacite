@@ -77,6 +77,7 @@ DATACITE_TITLE_TYPES = (
 )
 
 DATACITE_DEFAULT_NAME_TYPE = 'Personal'
+DATACITE_AFFILIATION_NAME_TYPE = 'Organizational'
 DATACITE_NAME_TYPES = (
     ('Personal', _('Personal')),
     ('Organizational', _('Organizational'))

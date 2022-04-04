@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib import admin
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import path
 
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
                     Name, NameIdentifier, Identifier
+from .imports import import_resource
 
 
 # Forms
@@ -85,7 +88,7 @@ class NameForm(forms.ModelForm):
         choices=Name.get_name_type_choices()
     )
     affiliations = forms.ModelMultipleChoiceField(
-        queryset=Name.objects.exclude(name_type='Personal'),
+        queryset=Name.objects.filter(name_type=Name.get_affiliation_name_type()),
         required=False
     )
 
@@ -102,6 +105,10 @@ class IdentifierForm(forms.ModelForm):
         initial=Identifier.get_default_identifier_type(),
         choices=Identifier.get_identifier_type_choices()
     )
+
+
+class ResourceUploadForm(forms.Form):
+    file = forms.FileField()
 
 
 # Inlines
@@ -171,6 +178,45 @@ class ResourceAdmin(admin.ModelAdmin):
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
     list_filter = ('resource_type_general', )
 
+    def get_urls(self):
+        return [
+            path('import/', self.admin_site.admin_view(self.datecite_resource_import_create),
+                 name='datecite_resource_import_create'),
+            path('<int:pk>/import/', self.admin_site.admin_view(self.datecite_resource_import_update),
+                 name='datecite_resource_import_update'),
+            ] + super().get_urls()
+
+    def datecite_resource_import_create(self, request):
+        form = ResourceUploadForm(request.POST or None, request.FILES or None)
+
+        if request.method == 'POST':
+            if '_back' in request.POST:
+                return redirect('admin:datacite_resource_list')
+
+            elif '_send' in request.POST and form.is_valid():
+                resource = import_resource(form.cleaned_data['file'])
+                return redirect('admin:datacite_resource_change', object_id=resource.id)
+
+        return render(request, 'admin/datacite/resource/import_form.html', context={
+            'form': form
+        })
+
+    def datecite_resource_import_update(self, request, pk):
+        resource = get_object_or_404(Resource, id=pk)
+        form = ResourceUploadForm(request.POST or None, request.FILES or None)
+
+        if request.method == 'POST':
+            if '_back' in request.POST:
+                return redirect('admin:datacite_resource_change', object_id=resource.id)
+
+            elif '_send' in request.POST and form.is_valid():
+                import_resource(form.cleaned_data['file'], resource)
+                return redirect('admin:datacite_resource_change', object_id=resource.id)
+
+        return render(request, 'admin/datacite/resource/import_form.html', context={
+            'form': form
+        })
+
 
 class NameAdmin(admin.ModelAdmin):
     form = NameForm
@@ -185,11 +231,10 @@ class IdentifierAdmin(admin.ModelAdmin):
     list_filter = ('identifier_type', )
 
     def get_readonly_fields(self, request, obj=None):
-        try:
-            obj.resource
-            return ('citation', )
-        except (AttributeError, Resource.DoesNotExist):
-            return tuple()
+        if obj.resources_as_identifier.exists():
+            return ['citation']
+        else:
+            return []
 
 
 admin.site.register(Resource, ResourceAdmin)

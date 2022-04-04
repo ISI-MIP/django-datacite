@@ -6,8 +6,8 @@ from .utils import get_settings, get_display_name, get_citation
 
 class Resource(models.Model):
 
-    identifier = models.OneToOneField(
-        'Identifier', null=True, blank=True, on_delete=models.SET_NULL
+    identifier = models.ForeignKey(
+        'Identifier', null=True, blank=True, on_delete=models.SET_NULL, related_name='resources_as_identifier'
     )
     publisher = models.CharField(
         max_length=256, blank=True
@@ -87,6 +87,10 @@ class Resource(models.Model):
     def get_resource_type_general_choices():
         return get_settings('DATACITE_RESOURCE_TYPES_GENERAL')
 
+    @classmethod
+    def validate_resource_type_general(cls, resource_type):
+        return resource_type in dict(cls.get_resource_type_general_choices())
+
     @staticmethod
     def get_default_language():
         return get_settings('DATACITE_DEFAULT_LANGUAGE')
@@ -94,6 +98,10 @@ class Resource(models.Model):
     @staticmethod
     def get_language_choices():
         return get_settings('DATACITE_LANGUAGES')
+
+    @classmethod
+    def validate_language(cls, language):
+        return language in dict(cls.get_language_choices())
 
 
 class Identifier(models.Model):
@@ -119,6 +127,10 @@ class Identifier(models.Model):
     def get_identifier_type_choices():
         return get_settings('DATACITE_IDENTIFIER_TYPES')
 
+    @classmethod
+    def validate_identifier_type(cls, identifier_type):
+        return identifier_type in dict(cls.get_identifier_type_choices())
+
 
 class Name(models.Model):
 
@@ -143,8 +155,16 @@ class Name(models.Model):
         return get_settings('DATACITE_DEFAULT_NAME_TYPE')
 
     @staticmethod
+    def get_affiliation_name_type():
+        return get_settings('DATACITE_AFFILIATION_NAME_TYPE')
+
+    @staticmethod
     def get_name_type_choices():
         return get_settings('DATACITE_NAME_TYPES')
+
+    @classmethod
+    def validate_name_type(cls, name_type):
+        return name_type in dict(cls.get_name_type_choices())
 
     def __str__(self):
         return self.name or f'{self.given_name} {self.family_name}'
@@ -176,6 +196,10 @@ class NameIdentifier(models.Model):
     @staticmethod
     def get_name_identifier_scheme_choices():
         return get_settings('DATACITE_NAME_IDENTIFIER_SCHEMES')
+
+    @classmethod
+    def validate_name_identifier_scheme(cls, name_identifier_scheme):
+        return name_identifier_scheme in dict(cls.get_name_identifier_scheme_choices())
 
 
 class Creator(models.Model):
@@ -226,6 +250,10 @@ class Contributor(models.Model):
     def get_contributor_type_choices():
         return get_settings('DATACITE_CONTRIBUTOR_TYPES')
 
+    @classmethod
+    def validate_contributor_type(cls, contributor_type):
+        return contributor_type in dict(cls.get_contributor_type_choices())
+
 
 class Title(models.Model):
 
@@ -253,6 +281,10 @@ class Title(models.Model):
     def get_title_type_choices():
         return get_settings('DATACITE_TITLE_TYPES')
 
+    @classmethod
+    def validate_title_type(cls, title_type):
+        return title_type in dict(cls.get_title_type_choices())
+
 
 class Description(models.Model):
 
@@ -278,6 +310,10 @@ class Description(models.Model):
     @staticmethod
     def get_description_type_choices():
         return get_settings('DATACITE_DESCRIPTION_TYPES')
+
+    @classmethod
+    def validate_description_type(cls, description_type):
+        return description_type in dict(cls.get_description_type_choices())
 
 
 class Subject(models.Model):
@@ -329,6 +365,10 @@ class Date(models.Model):
     def get_date_type_choices():
         return get_settings('DATACITE_DATE_TYPES')
 
+    @classmethod
+    def validate_date_type(cls, date_type):
+        return date_type in dict(cls.get_date_type_choices())
+
 
 class AlternateIdentifier(models.Model):
 
@@ -375,6 +415,10 @@ class RelatedIdentifier(models.Model):
     def get_relation_type_choices():
         return get_settings('DATACITE_RELATION_TYPES')
 
+    @classmethod
+    def validate_relation_type(cls, relation_type):
+        return relation_type in dict(cls.get_relation_type_choices())
+
     @staticmethod
     def get_default_resource_type_general():
         return get_settings('DATACITE_DEFAULT_RESOURCE_TYPE_GENERAL')
@@ -382,6 +426,10 @@ class RelatedIdentifier(models.Model):
     @staticmethod
     def get_resource_type_general_choices():
         return get_settings('DATACITE_RESOURCE_TYPES_GENERAL')
+
+    @classmethod
+    def validate_resource_type_general(cls, resource_type_general):
+        return resource_type_general in dict(cls.get_resource_type_general_choices())
 
 
 class Rights(models.Model):
@@ -422,3 +470,12 @@ class Rights(models.Model):
     @staticmethod
     def get_rights_identifier_choices():
         return get_settings('DATACITE_RIGHTS_IDENTIFIERS')
+
+    @classmethod
+    def validate_rights_identifier(cls, rights_identifier):
+        return rights_identifier in dict(cls.get_rights_identifier_choices())
+
+    @staticmethod
+    def get_rights_identifier_by_uri(uri):
+        # get the uri map, reverse it row by row with map, creates a dict again, and look for the uri with get
+        return dict(map(reversed, get_settings('DATACITE_RIGHTS_IDENTIFIER_URIS', {}).items())).get(uri)
