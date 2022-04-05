@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <h1>{% trans 'Copy resource' %}</h1>
+
+    <div class="inline-group">
+        {% trans 'Please confirm copying the resource.' %}
+    </div>
+
+    <div class="submit-row">
+        <input type="submit" value="{% trans 'Back' %}" name="_back">
+        <input type="submit" value="{% trans 'Copy' %}" class="default" name="_send">
+    </div>
+</form>
+
+{% endblock %}

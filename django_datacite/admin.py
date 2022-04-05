@@ -214,6 +214,8 @@ class ResourceAdmin(admin.ModelAdmin):
                  name='datecite_resource_import'),
             path('<int:pk>/import/', self.admin_site.admin_view(self.datecite_resource_import),
                  name='datecite_resource_import'),
+            path('<int:pk>/copy/', self.admin_site.admin_view(self.datecite_resource_copy),
+                 name='datecite_resource_copy'),
             ] + super().get_urls()
 
     def datecite_resource_import(self, request, pk=None):
@@ -235,9 +237,22 @@ class ResourceAdmin(admin.ModelAdmin):
                 resource = import_resource(form.cleaned_data['data'], resource)
                 return redirect('admin:datacite_resource_change', object_id=resource.id)
 
-        return render(request, 'admin/datacite/resource/import_form.html', context={
+        return render(request, 'admin/datacite/resource/import.html', context={
             'form': form
         })
+
+    def datecite_resource_copy(self, request, pk=None):
+        resource = get_object_or_404(Resource, id=pk)
+
+        if request.method == 'POST':
+            if '_back' in request.POST:
+                return redirect('admin:datacite_resource_change', object_id=pk)
+
+            elif '_send' in request.POST:
+                resource_copy = resource.copy()
+                return redirect('admin:datacite_resource_change', object_id=resource_copy.id)
+
+        return render(request, 'admin/datacite/resource/copy.html')
 
 
 class NameAdmin(admin.ModelAdmin):

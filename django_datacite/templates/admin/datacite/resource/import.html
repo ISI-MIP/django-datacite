@@ -1,0 +1,30 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h1>{% trans 'Import resource' %}</h1>
+
+    <div class="inline-group">
+        {% trans 'Please provide upload a DataCite JSON file OR provide a URL where a DataCite JSON file is located.' %}
+    </div>
+
+    <div class="inline-group">
+        {{ form.as_p }}
+    </div>
+
+    <div class="submit-row">
+        <input type="submit" value="{% trans 'Back' %}" name="_back">
+        <input type="submit" value="{% trans 'Import' %}" class="default" name="_send">
+    </div>
+</form>
+
+{% endblock %}

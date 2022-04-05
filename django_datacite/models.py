@@ -65,6 +65,87 @@ class Resource(models.Model):
             self.identifier.citation = self.citation
             self.identifier.save()
 
+    def copy(self):
+        # create and save new instance
+        resource = Resource(
+            identifier=self.identifier,
+            publisher=self.publisher,
+            publication_year=self.publication_year,
+            resource_type=self.resource_type,
+            resource_type_general=self.resource_type_general,
+            language=self.language,
+            size=self.size,
+            format=self.format,
+            version=self.version,
+            cite_publisher=self.cite_publisher,
+            cite_resource_type_general=self.cite_resource_type_general,
+            cite_version=self.cite_version
+        )
+        resource.save()
+
+        # copy related instances
+        for title in self.titles.all():
+            Title(
+                resource=resource,
+                title=title.title,
+                title_type=title.title_type
+            ).save()
+        for description in self.descriptions.all():
+            Description(
+                resource=resource,
+                description=description.description,
+                description_type=description.description_type
+            ).save()
+        for creator in self.creator_set.all():
+            Creator(
+                resource=resource,
+                name=creator.name,
+                order=creator.order
+            ).save()
+        for contributor in self.contributor_set.all():
+            Contributor(
+                resource=resource,
+                name=contributor.name,
+                order=contributor.order,
+                contributor_type=contributor.contributor_type
+            ).save()
+        for subject in self.subjects.all():
+            Subject(
+                resource=resource,
+                subject=subject.subject,
+                subject_scheme=subject.subject_scheme,
+                scheme_uri=subject.scheme_uri,
+                value_uri=subject.value_uri,
+                classification_code=subject.classification_code
+            ).save()
+        for date in self.dates.all():
+            Date(
+                resource=resource,
+                date=date.date,
+                date_type=date.date_type
+            ).save()
+        for alternate_identifier in self.alternateidentifier_set.all():
+            AlternateIdentifier(
+                resource=resource,
+                identifier=alternate_identifier.identifier,
+                order=alternate_identifier.order
+            ).save()
+        for related_identifier in self.relatedidentifier_set.all():
+            RelatedIdentifier(
+                resource=resource,
+                identifier=related_identifier.identifier,
+                order=related_identifier.order,
+                relation_type=related_identifier.relation_type,
+                resource_type_general=related_identifier.resource_type_general
+            ).save()
+        for rights in self.rights_list.all():
+            Rights(
+                resource=resource,
+                rights_identifier=rights.rights_identifier
+            ).save()
+
+        return resource
+
     @cached_property
     def title(self):
         main_title = self.titles.filter(title_type='').first()

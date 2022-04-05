@@ -3,8 +3,15 @@
 
 {% block object-tools-items %}
     <li>
-        <a href="{% url 'admin:datecite_resource_import' original.pk %}">
+        <a href="{% url 'admin:datecite_resource_import' original.pk %}"
+           title="{% trans 'Update this resource with data from a file or a URL.' %}">
             {% trans 'Import' %}
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'admin:datecite_resource_copy' original.pk %}"
+           title="{% trans 'Create a copy of this resource.' %}">
+            {% trans 'Copy' %}
         </a>
     </li>
     {{ block.super }}
