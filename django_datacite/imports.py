@@ -312,7 +312,7 @@ def import_name(name_node):
             if not Name.validate_name_type(name_type):
                 return
 
-            name_instance = Name(name=name)
+            name_instance = Name(name=name, name_type=name_type)
             logger.info('Name="%s" created', name_instance)
 
     # update the name instance
