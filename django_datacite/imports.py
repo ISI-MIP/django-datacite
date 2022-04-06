@@ -231,7 +231,7 @@ def import_resource(data, resource_instance=None):
 def import_identifier(identifier_node):
     identifier = identifier_node.get('identifier')
     identifier_type = identifier_node.get('identifierType')
-    print(identifier, identifier_type)
+
     if identifier and Identifier.validate_identifier_type(identifier_type):
         identifier_instance, created = Identifier.objects.update_or_create(
             identifier=identifier,

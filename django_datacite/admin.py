@@ -159,11 +159,13 @@ class DescriptionInline(NoExtraInlineMixin, admin.StackedInline):
 
 class CreatorInline(NoExtraInlineMixin, admin.TabularInline):
     model = Creator
+    autocomplete_fields = ('name', )
 
 
 class ContributorInline(NoExtraInlineMixin, admin.TabularInline):
     form = ContributorForm
     model = Contributor
+    autocomplete_fields = ('name', )
 
 
 class SubjectInline(NoExtraInlineMixin, admin.StackedInline):
@@ -177,11 +179,13 @@ class DateInline(NoExtraInlineMixin, admin.TabularInline):
 
 class AlternateIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     model = AlternateIdentifier
+    autocomplete_fields = ('identifier', )
 
 
 class RelatedIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = RelatedIdentifierForm
     model = RelatedIdentifier
+    autocomplete_fields = ('identifier', )
 
 
 class RightsInline(NoExtraInlineMixin, admin.TabularInline):
@@ -207,6 +211,7 @@ class ResourceAdmin(admin.ModelAdmin):
     readonly_fields = ('citation', )
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
     list_filter = ('resource_type_general', )
+    autocomplete_fields = ('identifier', )
 
     def get_urls(self):
         return [
@@ -260,18 +265,17 @@ class NameAdmin(admin.ModelAdmin):
     inlines = (NameIdentifierInline, )
     list_display = ('name', 'name_type')
     list_filter = ('name_type', )
+    search_fields = ('name', 'name_identifiers__name_identifier')
 
 
 class IdentifierAdmin(admin.ModelAdmin):
     form = IdentifierForm
     list_display = ('identifier', 'identifier_type')
     list_filter = ('identifier_type', )
+    search_fields = ('identifier', )
 
     def get_readonly_fields(self, request, obj=None):
-        if obj.resources_as_identifier.exists():
-            return ['citation']
-        else:
-            return []
+        return ['citation'] if (obj and obj.resources_as_identifier.exists()) else []
 
 
 admin.site.register(Resource, ResourceAdmin)
