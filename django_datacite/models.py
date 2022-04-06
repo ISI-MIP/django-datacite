@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.functional import cached_property
 
-from .utils import get_settings, get_display_name, get_citation
+from .utils import get_settings, get_display_name, get_citation, serialize_resource, validate_resource
 
 
 class Resource(models.Model):
@@ -145,6 +145,12 @@ class Resource(models.Model):
             ).save()
 
         return resource
+
+    def serialize(self):
+        return serialize_resource(self)
+
+    def validate(self):
+        return validate_resource(self)
 
     @cached_property
     def title(self):

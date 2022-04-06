@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="inline-group">
+    {% if errors %}
+    <p>{% trans 'The resource dif not validate validated successfully. The following errors were found:' %}</p>
+    <pre>
+    {% for error in errors %}
+    {{ error }}
+    {% endfor %}
+    </pre>
+    {% else %}
+    <p>{% trans 'The resource validated successfully.' %}</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'admin:datacite_resource_change' resource.id %}">Back</a>
+
+{% endblock %}

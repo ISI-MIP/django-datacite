@@ -14,5 +14,11 @@
             {% trans 'Copy' %}
         </a>
     </li>
+    <li>
+        <a href="{% url 'admin:datecite_resource_validate' original.pk %}"
+           title="{% trans 'Validate this resource.' %}">
+            {% trans 'Validate' %}
+        </a>
+    </li>
     {{ block.super }}
 {% endblock %}

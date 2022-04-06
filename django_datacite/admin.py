@@ -221,6 +221,8 @@ class ResourceAdmin(admin.ModelAdmin):
                  name='datecite_resource_import'),
             path('<int:pk>/copy/', self.admin_site.admin_view(self.datecite_resource_copy),
                  name='datecite_resource_copy'),
+            path('<int:pk>/validate/', self.admin_site.admin_view(self.datecite_resource_validate),
+                 name='datecite_resource_validate'),
             ] + super().get_urls()
 
     def datecite_resource_import(self, request, pk=None):
@@ -258,6 +260,13 @@ class ResourceAdmin(admin.ModelAdmin):
                 return redirect('admin:datacite_resource_change', object_id=resource_copy.id)
 
         return render(request, 'admin/datacite/resource/copy.html')
+
+    def datecite_resource_validate(self, request, pk=None):
+        resource = get_object_or_404(Resource, id=pk)
+        return render(request, 'admin/datacite/resource/validate.html', {
+            'resource': resource,
+            'errors': resource.validate()
+        })
 
 
 class NameAdmin(admin.ModelAdmin):

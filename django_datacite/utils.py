@@ -24,7 +24,9 @@ def get_citation(resource):
 
 
 def serialize_resource(resource):
-    data = {}
+    data = {
+        'schemaVersion': 'http://datacite.org/schema/kernel-4'
+    }
 
     # identifiers
     if resource.identifier:
@@ -49,7 +51,7 @@ def serialize_resource(resource):
 
     # publication_year
     if resource.publication_year is not None:
-        data['publicationYear'] = resource.publication_year
+        data['publicationYear'] = str(resource.publication_year)
 
     # resource_type
     if resource.resource_type or resource.resource_type_general:
@@ -220,3 +222,8 @@ def serialize_related_identifiers(related_identifier):
         data['citation'] = related_identifier.identifier.citation
 
     return data
+
+
+def validate_resource(resource):
+    from datacite.schema43 import validator
+    return list(validator.iter_errors(resource.serialize()))
