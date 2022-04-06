@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 
 from .models import Resource
-from .utils import serialize_resource
 from .renderers import XMLRenderer
 
 
@@ -16,16 +15,14 @@ def resource(request, identifier=None):
 
 def resource_json(request, identifier=None):
     resource = get_object_or_404(Resource.objects.all(), identifier__identifier=identifier)
-    data = serialize_resource(resource)
-    response = HttpResponse(json.dumps(data, indent=2), content_type="application/json")
+    response = HttpResponse(json.dumps(resource.serialize(), indent=2), content_type="application/json")
     response['Content-Disposition'] = 'filename="{}.json"'.format(identifier)
     return response
 
 
 def resource_xml(request, identifier=None):
     resource = get_object_or_404(Resource.objects.all(), identifier__identifier=identifier)
-    data = serialize_resource(resource)
-    xml = XMLRenderer().render(data)
+    xml = XMLRenderer().render(resource.serialize())
     response = HttpResponse(xml, content_type="application/xml")
     response['Content-Disposition'] = 'filename="{}.xml"'.format(identifier)
     return response
