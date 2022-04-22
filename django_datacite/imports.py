@@ -5,7 +5,7 @@ from django.utils.dateparse import parse_date
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
                     Name, NameIdentifier, Identifier, GeoLocation, \
-                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon
+                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, FundingReference
 
 logger = logging.getLogger(__name__)
 
@@ -227,10 +227,35 @@ def import_resource(data, resource_instance=None):
                 logger.info('Rights="%s" %s', rights_instance, 'created' if created else 'updated')
 
     # geoLocations
-    geo_locations = data.get('geoLocations')
-    for geo_location_node in geo_locations:
-        geo_location_instance = import_geo_location(geo_location_node)
-        resource_instance.geo_locations.add(geo_location_instance)
+    geo_locations_node = data.get('geoLocations')
+    if geo_locations_node and isinstance(geo_locations_node, list):
+        for geo_location_node in geo_locations_node:
+            geo_location_instance = import_geo_location(geo_location_node)
+            resource_instance.geo_locations.add(geo_location_instance)
+
+    # funding_references
+    funding_reference_nodes = data.get('fundingReferences')
+    if funding_reference_nodes and isinstance(funding_reference_nodes, list):
+        for funding_reference_node in funding_reference_nodes:
+            funder_instance = import_name({
+                'name': funding_reference_node.get('funderName'),
+                'nameType': Name.get_affiliation_name_type(),
+                'nameIdentifiers': [
+                    {
+                        'nameIdentifier': funding_reference_node.get('funderIdentifier'),
+                        'nameIdentifierScheme': funding_reference_node.get('funderIdentifierType')
+                    }
+                ]
+            })
+            funding_reference, created = FundingReference.objects.update_or_create(
+                resource=resource_instance,
+                funder=funder_instance,
+                defaults={
+                    'award_number': funding_reference_node.get('awardNumber', ''),
+                    'award_uri': funding_reference_node.get('awardURI', ''),
+                    'award_title': funding_reference_node.get('awardTitle', '')
+                }
+            )
 
     return resource_instance
 

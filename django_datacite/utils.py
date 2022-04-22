@@ -130,6 +130,11 @@ def serialize_resource(resource):
     if geo_locations:
         data['geoLocations'] = [serialize_geo_location(geo_location) for geo_location in geo_locations]
 
+    # funding reference
+    funding_references = resource.fundingreference_set.all()
+    if funding_references:
+        data['fundingReferences'] = [serialize_funding_references(funding_reference) for funding_reference in funding_references]
+
     return data
 
 
@@ -268,6 +273,29 @@ def serialize_geo_location(geo_location):
         })
     if geo_location_polygons:
         data['geoLocationPolygons'] = [geo_location_polygon for geo_location_polygon in geo_location_polygons]
+
+    return data
+
+
+def serialize_funding_references(funding_reference):
+    data = {
+        'funderName': funding_reference.funder.name
+    }
+
+    name_identifier = funding_reference.funder.name_identifiers.first()
+    if name_identifier:
+        data['funderIdentifier'] = name_identifier.name_identifier
+        data['funderIdentifierType'] = name_identifier.name_identifier_scheme
+        data['schemeURI'] = name_identifier.scheme_uri
+
+    if funding_reference.award_number:
+        data['awardNumber'] = funding_reference.award_number
+
+    if funding_reference.award_uri:
+        data['awardURI'] = funding_reference.award_uri
+
+    if funding_reference.award_title:
+        data['awardTitle'] = funding_reference.award_title
 
     return data
 

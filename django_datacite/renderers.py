@@ -211,6 +211,24 @@ class XMLRenderer(object):
 
             self.xml.endElement('geoLocations')
 
+        # relatedIdentifiers
+        funding_references = self.data.get('fundingReferences')
+        if funding_references:
+            self.xml.startElement('fundingReferences', {})
+            for funding_reference in funding_references:
+                self.xml.startElement('fundingReference', {})
+                self.render_node('funderName', {}, funding_reference.get('funderName'))
+                self.render_node('funderIdentifier', {
+                    'funderIdentifierType': funding_reference.get('funderIdentifierType'),
+                    'schemeURI': funding_reference.get('schemeURI'),
+                }, funding_reference.get('funderIdentifier'))
+                self.render_node('fundingReference', {}, funding_reference.get('fundingReference'))
+                self.render_node('awardNumber', {}, funding_reference.get('awardNumber'))
+                self.render_node('awardURI', {}, funding_reference.get('awardURI'))
+                self.render_node('awardTitle', {}, funding_reference.get('awardTitle'))
+                self.xml.endElement('fundingReference')
+            self.xml.endElement('fundingReferences')
+
         self.xml.endElement('resource')
 
     def render_name(self, tag, name):

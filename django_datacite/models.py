@@ -60,6 +60,9 @@ class Resource(models.Model):
     geo_locations = models.ManyToManyField(
         'GeoLocation', blank=True, related_name='geo_locations'
     )
+    funding_references = models.ManyToManyField(
+        'Name', through='FundingReference', blank=True, related_name='resources_as_funding_reference'
+    )
 
     def __str__(self):
         return str(self.identifier)
@@ -151,6 +154,14 @@ class Resource(models.Model):
             ).save()
         for geo_location in self.geo_locations.all():
             resource.geo_locations.add(geo_location)
+        for funding_reference in self.fundingreference_set.all():
+            FundingReference(
+                resource=resource,
+                funder=funding_reference.funder,
+                award_number=funding_reference.award_number,
+                award_uri=funding_reference.award_uri,
+                award_title=funding_reference.award_title
+            ).save()
 
         return resource
 
@@ -654,3 +665,22 @@ class GeoLocationPolygon(models.Model):
 
     def __str__(self):
         return Truncator(self.polygon_points).chars(32)
+
+
+class FundingReference(models.Model):
+
+    resource = models.ForeignKey(
+        'Resource', on_delete=models.CASCADE
+    )
+    funder = models.ForeignKey(
+        'Name', on_delete=models.CASCADE
+    )
+    award_number = models.CharField(
+        max_length=256, blank=True
+    )
+    award_uri = models.URLField(
+        blank=True
+    )
+    award_title = models.CharField(
+        max_length=256, blank=True
+    )

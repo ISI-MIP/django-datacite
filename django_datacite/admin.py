@@ -12,7 +12,7 @@ from django.utils.translation import gettext as _
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
                     Name, NameIdentifier, Identifier, GeoLocation, \
-                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon
+                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, FundingReference
 from .imports import import_resource
 
 
@@ -105,6 +105,13 @@ class GeoLocationPolygonForm(forms.ModelForm):
 
     class Meta:
         widgets = {'in_point': admin.widgets.AdminTextInputWidget()}
+
+
+class FundingReferenceForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['funder'].queryset = Name.objects.filter(name_type=Name.get_affiliation_name_type())
 
 
 class NameForm(forms.ModelForm):
@@ -233,6 +240,11 @@ class GeoLocationPolygonInline(NoExtraInlineMixin, admin.TabularInline):
     model = GeoLocationPolygon
 
 
+class FundingReferenceInline(NoExtraInlineMixin, admin.StackedInline):
+    form = FundingReferenceForm
+    model = FundingReference
+
+
 class NameIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = NameIdentifierForm
     model = NameIdentifier
@@ -245,7 +257,7 @@ class ResourceAdmin(admin.ModelAdmin):
     inlines = (TitleInline, DescriptionInline, CreatorInline,
                ContributorInline, SubjectInline, DateInline,
                AlternateIdentifierInline, RelatedIdentifierInline,
-               RightsInline, GeoLocationInline)
+               RightsInline, GeoLocationInline, FundingReferenceInline)
 
     search_fields = ('identifier', )
     readonly_fields = ('citation', )
