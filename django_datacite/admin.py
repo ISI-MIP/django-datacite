@@ -11,7 +11,8 @@ from django.utils.translation import gettext as _
 
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
-                    Name, NameIdentifier, Identifier
+                    Name, NameIdentifier, Identifier, GeoLocation, \
+                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon
 from .imports import import_resource
 
 
@@ -86,6 +87,24 @@ class RightsForm(forms.ModelForm):
         # this always needs to be true since otherwise the only the default value
         # rights_identifier would not be saved
         return True
+
+
+class GeoLocationPointForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {'point': admin.widgets.AdminTextInputWidget()}
+
+
+class GeoLocationBoxForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {'bbox': admin.widgets.AdminTextInputWidget()}
+
+
+class GeoLocationPolygonForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {'in_point': admin.widgets.AdminTextInputWidget()}
 
 
 class NameForm(forms.ModelForm):
@@ -193,6 +212,27 @@ class RightsInline(NoExtraInlineMixin, admin.TabularInline):
     model = Rights
 
 
+class GeoLocationInline(NoExtraInlineMixin, admin.StackedInline):
+    model = Resource.geo_locations.through
+    verbose_name = 'Geo Location'
+    verbose_name_plural = 'Geo Locations'
+
+
+class GeoLocationPointInline(NoExtraInlineMixin, admin.TabularInline):
+    form = GeoLocationPointForm
+    model = GeoLocationPoint
+
+
+class GeoLocationBoxInline(NoExtraInlineMixin, admin.TabularInline):
+    form = GeoLocationBoxForm
+    model = GeoLocationBox
+
+
+class GeoLocationPolygonInline(NoExtraInlineMixin, admin.TabularInline):
+    form = GeoLocationPolygonForm
+    model = GeoLocationPolygon
+
+
 class NameIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = NameIdentifierForm
     model = NameIdentifier
@@ -205,10 +245,11 @@ class ResourceAdmin(admin.ModelAdmin):
     inlines = (TitleInline, DescriptionInline, CreatorInline,
                ContributorInline, SubjectInline, DateInline,
                AlternateIdentifierInline, RelatedIdentifierInline,
-               RightsInline)
+               RightsInline, GeoLocationInline)
 
     search_fields = ('identifier', )
     readonly_fields = ('citation', )
+    exclude = ('geo_locations', )
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
     list_filter = ('resource_type_general', )
     autocomplete_fields = ('identifier', )
@@ -287,6 +328,11 @@ class IdentifierAdmin(admin.ModelAdmin):
         return ['citation'] if (obj and obj.resources_as_identifier.exists()) else []
 
 
+class GeoLocationAdmin(admin.ModelAdmin):
+    inlines = (GeoLocationPointInline, GeoLocationBoxInline, GeoLocationPolygonInline)
+
+
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Name, NameAdmin)
 admin.site.register(Identifier, IdentifierAdmin)
+admin.site.register(GeoLocation, GeoLocationAdmin)

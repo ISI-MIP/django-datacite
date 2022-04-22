@@ -17,9 +17,9 @@ class XMLRenderer(object):
         return dom.toprettyxml(indent='    ')
 
     def render_node(self, tag, attrs, value):
-        if value:
+        if value is not None:
             # remove None values from attrs
-            attrs = dict((k, v) for k, v in attrs.items() if v)
+            attrs = dict((k, v) for k, v in attrs.items() if v is not None)
 
             self.xml.startElement(tag, attrs)
             self.xml.characters(str(value))
@@ -162,6 +162,54 @@ class XMLRenderer(object):
                     'descriptionType': description.get('descriptionType', 'Abstract')
                 }, description.get('description'))
             self.xml.endElement('descriptions')
+
+        # geo location
+        geo_locations = self.data.get('geoLocations')
+        if geo_locations:
+            self.xml.startElement('geoLocations', {})
+            for geo_location in geo_locations:
+                self.xml.startElement('geoLocation', {})
+
+                geo_location_place = geo_location.get('geoLocationPlace')
+                if geo_location_place:
+                    self.render_node('geoLocationPlace', {}, geo_location_place)
+
+                geo_location_point = geo_location.get('geoLocationPoint')
+                if geo_location_point:
+                    self.xml.startElement('geoLocationPoint', {})
+                    self.render_node('pointLongitude', {}, geo_location_point.get('pointLongitude'))
+                    self.render_node('pointLatitude', {}, geo_location_point.get('pointLatitude'))
+                    self.xml.endElement('geoLocationPoint')
+
+                geo_location_box = geo_location.get('geoLocationBox')
+                if geo_location_box:
+                    self.xml.startElement('geoLocationBox', {})
+                    self.render_node('westBoundLongitude', {}, geo_location_box.get('westBoundLongitude'))
+                    self.render_node('eastBoundLongitude', {}, geo_location_box.get('eastBoundLongitude'))
+                    self.render_node('southBoundLatitude', {}, geo_location_box.get('southBoundLatitude'))
+                    self.render_node('northBoundLatitude', {}, geo_location_box.get('northBoundLatitude'))
+                    self.xml.endElement('geoLocationBox')
+
+                geo_location_polygons = geo_location.get('geoLocationPolygons')
+                if geo_location_polygons:
+                    for geo_location_polygon in geo_location_polygons:
+                        self.xml.startElement('geoLocationPolygon', {})
+                        for polygon_point in geo_location_polygon.get('polygonPoints'):
+                            self.xml.startElement('polygonPoint', {})
+                            self.render_node('pointLongitude', {}, polygon_point.get('pointLongitude'))
+                            self.render_node('pointLatitude', {}, polygon_point.get('pointLatitude'))
+                            self.xml.endElement('polygonPoint')
+                        in_point = geo_location_polygon.get('inPolygonPoint')
+                        if in_point:
+                            self.xml.startElement('inPolygonPoint', {})
+                            self.render_node('pointLongitude', {}, in_point.get('pointLongitude'))
+                            self.render_node('pointLatitude', {}, in_point.get('pointLatitude'))
+                            self.xml.endElement('inPolygonPoint')
+                        self.xml.endElement('geoLocationPolygon')
+
+                self.xml.endElement('geoLocation')
+
+            self.xml.endElement('geoLocations')
 
         self.xml.endElement('resource')
 

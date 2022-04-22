@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 
 from . import settings as default_settings
@@ -124,6 +125,11 @@ def serialize_resource(resource):
             'descriptionType': description.description_type
         } for description in descriptions]
 
+    # geo location
+    geo_locations = resource.geo_locations.all()
+    if geo_locations:
+        data['geoLocations'] = [serialize_geo_location(geo_location) for geo_location in geo_locations]
+
     return data
 
 
@@ -220,6 +226,48 @@ def serialize_related_identifiers(related_identifier):
 
     if getattr(settings, 'DATACITE_INCLUDE_CITATION', False):
         data['citation'] = related_identifier.identifier.citation
+
+    return data
+
+
+def serialize_geo_location(geo_location):
+    data = {}
+
+    if geo_location.geo_location_place:
+        data['geoLocationPlace'] = geo_location.geo_location_place
+
+    try:
+        data['geoLocationPoint'] = {
+            'pointLongitude': geo_location.geo_location_point.point_longitude,
+            'pointLatitude': geo_location.geo_location_point.point_latitude
+        }
+    except ObjectDoesNotExist:
+        pass
+
+    try:
+        data['geoLocationBox'] = {
+            'westBoundLongitude': geo_location.geo_location_box.west_bound_longitude,
+            'eastBoundLongitude': geo_location.geo_location_box.east_bound_longitude,
+            'southBoundLatitude': geo_location.geo_location_box.south_bound_latitude,
+            'northBoundLatitude': geo_location.geo_location_box.north_bound_latitude
+        }
+    except ObjectDoesNotExist:
+        pass
+
+    geo_location_polygons = []
+    for geo_location_polygon in geo_location.geo_location_polygons.all():
+        geo_location_polygons.append({
+            'polygonPoints': [{
+                'pointLongitude': polygon_point[0],
+                'pointLatitude': polygon_point[1]
+            } for polygon_point in geo_location_polygon.polygon_points],
+            'inPolygonPoint': {
+                'pointLongitude': geo_location_polygon.in_point_longitude,
+                'pointLatitude': geo_location_polygon.in_point_latitude
+            }
+        })
+    if geo_location_polygons:
+        data['geoLocationPolygons'] = [geo_location_polygon for geo_location_polygon in geo_location_polygons]
 
     return data
 

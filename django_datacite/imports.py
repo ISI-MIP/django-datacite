@@ -4,7 +4,8 @@ from django.utils.dateparse import parse_date
 
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
-                    Name, NameIdentifier, Identifier
+                    Name, NameIdentifier, Identifier, GeoLocation, \
+                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon
 
 logger = logging.getLogger(__name__)
 
@@ -225,6 +226,12 @@ def import_resource(data, resource_instance=None):
                 )
                 logger.info('Rights="%s" %s', rights_instance, 'created' if created else 'updated')
 
+    # geoLocations
+    geo_locations = data.get('geoLocations')
+    for geo_location_node in geo_locations:
+        geo_location_instance = import_geo_location(geo_location_node)
+        resource_instance.geo_locations.add(geo_location_instance)
+
     return resource_instance
 
 
@@ -332,3 +339,65 @@ def import_name(name_node):
     name_instance.affiliations.set(affiliation_instances)
 
     return name_instance
+
+
+def import_geo_location(geo_location_node):
+    geo_location_place = geo_location_node.get('geoLocationPlace')
+
+    try:
+        geo_location_instance = GeoLocation.objects.get(
+            geo_location_place=geo_location_place
+        )
+        logger.info('GeoLocation="%s" found', geo_location_instance)
+    except GeoLocation.DoesNotExist:
+        geo_location_instance = GeoLocation(
+            geo_location_place=geo_location_place
+        )
+        logger.info('GeoLocation="%s" created', geo_location_instance)
+
+    geo_location_instance.save()
+
+    geo_location_point = geo_location_node.get('geoLocationPoint')
+    if geo_location_point and \
+            geo_location_point.get('pointLongitude') is not None and \
+            geo_location_point.get('pointLatitude') is not None:
+        geo_location_point_instance, created = GeoLocationPoint.objects.update_or_create(
+            geo_location=geo_location_instance,
+            defaults={
+                'point_longitude': geo_location_point.get('pointLongitude'),
+                'point_latitude': geo_location_point.get('pointLatitude')
+            }
+        )
+
+    geo_location_bbox = geo_location_node.get('geoLocationBox')
+    if geo_location_bbox and \
+            geo_location_bbox.get('westBoundLongitude') is not None and \
+            geo_location_bbox.get('eastBoundLongitude') is not None and \
+            geo_location_bbox.get('southBoundLatitude') is not None and \
+            geo_location_bbox.get('northBoundLatitude') is not None:
+        geo_location_bbox_instance, created = GeoLocationBox.objects.update_or_create(
+            geo_location=geo_location_instance,
+            defaults={
+                'west_bound_longitude': geo_location_bbox.get('westBoundLongitude'),
+                'east_bound_longitude': geo_location_bbox.get('eastBoundLongitude'),
+                'south_bound_latitude': geo_location_bbox.get('southBoundLatitude'),
+                'north_bound_latitude': geo_location_bbox.get('northBoundLatitude')
+            }
+        )
+
+    geo_location_polygons = geo_location_node.get('geoLocationPolygons', [])
+    for geo_location_polygon in geo_location_polygons:
+        polygon_points = geo_location_polygon.get('polygonPoints')
+        if polygon_points:
+            polygon_points_json = [
+                [point.get('pointLongitude'), point.get('pointLatitude')]
+                for point in polygon_points
+            ]
+            geo_location_polygon_instance, created = GeoLocationPolygon.objects.update_or_create(
+                geo_location=geo_location_instance,
+                polygon_points=polygon_points_json,
+                in_point_longitude=geo_location_polygon.get('inPolygonPoint', {}).get('pointLongitude'),
+                in_point_latitude=geo_location_polygon.get('inPolygonPoint', {}).get('pointLatitude')
+            )
+
+    return geo_location_instance

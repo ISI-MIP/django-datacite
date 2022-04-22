@@ -1,7 +1,10 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.functional import cached_property
+from django.utils.text import Truncator
 
 from .utils import get_settings, get_display_name, get_citation, serialize_resource, validate_resource
+from .validators import validate_polygon_points
 
 
 class Resource(models.Model):
@@ -53,6 +56,9 @@ class Resource(models.Model):
     )
     related_identifiers = models.ManyToManyField(
         'Identifier', through='RelatedIdentifier', blank=True, related_name='resources_as_related_identifier'
+    )
+    geo_locations = models.ManyToManyField(
+        'GeoLocation', blank=True, related_name='geo_locations'
     )
 
     def __str__(self):
@@ -143,6 +149,8 @@ class Resource(models.Model):
                 resource=resource,
                 rights_identifier=rights.rights_identifier
             ).save()
+        for geo_location in self.geo_locations.all():
+            resource.geo_locations.add(geo_location)
 
         return resource
 
@@ -566,3 +574,83 @@ class Rights(models.Model):
     def get_rights_identifier_by_uri(uri):
         # get the uri map, reverse it row by row with map, creates a dict again, and look for the uri with get
         return dict(map(reversed, get_settings('DATACITE_RIGHTS_IDENTIFIER_URIS', {}).items())).get(uri)
+
+
+class GeoLocation(models.Model):
+
+    geo_location_place = models.TextField(
+        blank=True
+    )
+
+    def __str__(self):
+        if self.geo_location_place:
+            return self.geo_location_place
+        else:
+            try:
+                return str(self.geo_location_point)
+            except GeoLocationPoint.DoesNotExist:
+                try:
+                    return str(self.geo_location_box)
+                except GeoLocationBox.DoesNotExist:
+                    polygon = self.geo_location_polygons.first()
+                    if polygon:
+                        return str(polygon)
+                    else:
+                        return f'GeoLocation #{self.pk}'
+
+
+class GeoLocationPoint(models.Model):
+
+    geo_location = models.OneToOneField(
+        'GeoLocation', related_name='geo_location_point', on_delete=models.CASCADE
+    )
+    point_longitude = models.FloatField(
+        validators=[MinValueValidator(-180), MaxValueValidator(180)]
+    )
+    point_latitude = models.FloatField(
+        validators=[MinValueValidator(-90), MaxValueValidator(90)]
+    )
+
+    def __str__(self):
+        return '{point_longitude}, {point_latitude}'.format(**vars(self))
+
+
+class GeoLocationBox(models.Model):
+
+    geo_location = models.OneToOneField(
+        'GeoLocation', related_name='geo_location_box', on_delete=models.CASCADE
+    )
+    west_bound_longitude = models.FloatField(
+        validators=[MinValueValidator(-180), MaxValueValidator(180)]
+    )
+    east_bound_longitude = models.FloatField(
+        validators=[MinValueValidator(-180), MaxValueValidator(180)]
+    )
+    south_bound_latitude = models.FloatField(
+        validators=[MinValueValidator(-90), MaxValueValidator(90)]
+    )
+    north_bound_latitude = models.FloatField(
+        validators=[MinValueValidator(-90), MaxValueValidator(90)]
+    )
+
+    def __str__(self):
+        return '{west_bound_longitude}, {east_bound_longitude}, {south_bound_latitude}, {north_bound_latitude}'.format(**vars(self))
+
+
+class GeoLocationPolygon(models.Model):
+
+    geo_location = models.ForeignKey(
+        'GeoLocation', related_name='geo_location_polygons', on_delete=models.CASCADE
+    )
+    polygon_points = models.JSONField(
+        default=list, validators=[validate_polygon_points]
+    )
+    in_point_longitude = models.FloatField(
+        null=True, blank=True, validators=[MinValueValidator(-180), MaxValueValidator(180)]
+    )
+    in_point_latitude = models.FloatField(
+        null=True, blank=True, validators=[MinValueValidator(-90), MaxValueValidator(90)]
+    )
+
+    def __str__(self):
+        return Truncator(self.polygon_points).chars(32)
