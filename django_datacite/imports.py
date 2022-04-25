@@ -11,10 +11,7 @@ from .models import Resource, Title, Description, Creator, Contributor, Subject,
 logger = logging.getLogger(__name__)
 
 
-def import_resource(data, resource_instance=None):
-    if resource_instance is None:
-        resource_instance = Resource()
-
+def import_resource(resource_instance, data):
     # identifier and identifierType
     identifier_nodes = data.get('identifiers', [])
     if identifier_nodes and isinstance(identifier_nodes, list) and len(identifier_nodes) == 1:
@@ -265,15 +262,15 @@ def import_resource(data, resource_instance=None):
 
             # try to find the related item as existing resource in the database
             try:
-                existing_resource_instance = Resource.objects.get(
+                item_instance = Resource.objects.get(
                     identifier__identifier=identifier,
                     identifier__identifier_type=identifier_type
                 )
             except Resource.DoesNotExist:
-                existing_resource_instance = None
+                item_instance = Resource()
 
             # create or update the related item resource
-            item_instance = import_resource({
+            item_instance = import_resource(item_instance, {
                 'types': {
                     'resourceTypeGeneral': related_item_node.get('relatedItemType')
                 },
@@ -286,7 +283,7 @@ def import_resource(data, resource_instance=None):
                 'publicationYear': related_item_node.get('publicationYear'),
                 'publisher': related_item_node.get('publisher'),
                 'contributors': related_item_node.get('contributors')
-            }, resource_instance=existing_resource_instance)
+            })
 
             number_type = related_item_node.get('numberType')
             if not RelatedItem.validate_number_type(number_type):

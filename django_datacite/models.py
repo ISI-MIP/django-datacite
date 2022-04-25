@@ -3,12 +3,15 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 
-from .utils import get_settings, get_display_name, get_citation, serialize_resource, validate_resource
-from .validators import validate_polygon_points
+from .utils import get_settings, get_display_name, render_citation
+from .validators import validate_polygon_points, validate_resource
 
 
 class Resource(models.Model):
 
+    public = models.BooleanField(
+        default=False
+    )
     identifier = models.ForeignKey(
         'Identifier', null=True, blank=True, on_delete=models.SET_NULL, related_name='as_identifier'
     )
@@ -181,9 +184,6 @@ class Resource(models.Model):
 
         return resource
 
-    def serialize(self):
-        return serialize_resource(self)
-
     def validate(self):
         return validate_resource(self)
 
@@ -195,7 +195,7 @@ class Resource(models.Model):
 
     @cached_property
     def citation(self):
-        return get_citation(self)
+        return render_citation(self)
 
     @staticmethod
     def get_default_publisher():

@@ -1,20 +1,24 @@
 import json
 
 import requests
-
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
 from django.utils.translation import gettext as _
 
+
+from .exports import export_resource
+from .imports import import_resource
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
                     Name, NameIdentifier, Identifier, GeoLocation, \
                     GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
                     FundingReference, RelatedItem
-from .imports import import_resource
+from .renderers import XMLRenderer
+from .utils import render_bibtex
 
 
 # Forms
@@ -288,6 +292,8 @@ class ResourceAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
+            path('<int:pk>/export/<str:format>/', self.admin_site.admin_view(self.datecite_resource_export),
+                 name='datecite_resource_export'),
             path('import/', self.admin_site.admin_view(self.datecite_resource_import),
                  name='datecite_resource_import'),
             path('<int:pk>/import/', self.admin_site.admin_view(self.datecite_resource_import),
@@ -298,11 +304,31 @@ class ResourceAdmin(admin.ModelAdmin):
                  name='datecite_resource_validate'),
             ] + super().get_urls()
 
+    def datecite_resource_export(self, request, pk=None, format=None):
+        resource = get_object_or_404(Resource, id=pk)
+
+        if format == 'json':
+            resource_json = json.dumps(export_resource(resource), indent=2)
+            response = HttpResponse(resource_json, content_type="application/json")
+            response['Content-Disposition'] = 'filename="{}.json"'.format(resource.identifier)
+        elif format == 'xml':
+            resource_xml = XMLRenderer().render(export_resource(resource))
+            response = HttpResponse(resource_xml, content_type="application/xml")
+            response['Content-Disposition'] = 'filename="{}.xml"'.format(resource.identifier)
+        elif format == 'bibtex':
+            resource_bibtex = render_bibtex(resource)
+            response = HttpResponse(resource_bibtex, content_type='application/x-bibtex')
+            response['Content-Disposition'] = 'filename="{}.bib"'.format(resource.identifier)
+        else:
+            raise Http404
+
+        return response
+
     def datecite_resource_import(self, request, pk=None):
         if pk is not None:
             resource = get_object_or_404(Resource, id=pk)
         else:
-            resource = None
+            resource = Resource()
 
         form = ImportForm(request.POST or None, request.FILES or None)
 
@@ -314,7 +340,7 @@ class ResourceAdmin(admin.ModelAdmin):
                     return redirect('admin:datacite_resource_changelist')
 
             elif '_send' in request.POST and form.is_valid():
-                resource = import_resource(form.cleaned_data['data'], resource)
+                resource = import_resource(resource, form.cleaned_data['data'])
                 return redirect('admin:datacite_resource_change', object_id=resource.id)
 
         return render(request, 'admin/datacite/resource/import.html', context={
@@ -338,7 +364,7 @@ class ResourceAdmin(admin.ModelAdmin):
         resource = get_object_or_404(Resource, id=pk)
         return render(request, 'admin/datacite/resource/validate.html', {
             'resource': resource,
-            'errors': resource.validate()
+            'errors': resource.validate_json()
         })
 
 

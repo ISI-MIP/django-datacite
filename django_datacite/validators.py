@@ -3,6 +3,11 @@ from django.core.exceptions import ValidationError
 import jsonschema
 
 
+def validate_resource(resource):
+    from datacite.schema43 import validator
+    return list(validator.iter_errors(resource.serialize()))
+
+
 def validate_polygon_points(value):
     try:
         jsonschema.validate(value, {
