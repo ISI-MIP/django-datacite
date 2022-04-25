@@ -5,7 +5,8 @@ from django.utils.dateparse import parse_date
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
                     Name, NameIdentifier, Identifier, GeoLocation, \
-                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, FundingReference
+                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
+                    FundingReference, RelatedItem
 
 logger = logging.getLogger(__name__)
 
@@ -192,9 +193,7 @@ def import_resource(data, resource_instance=None):
                 })
 
                 resource_type_general = related_identifier_node.get('resourceTypeGeneral')
-                if RelatedIdentifier.validate_resource_type_general(resource_type_general):
-                    resource_type_general = resource_type_general
-                else:
+                if not RelatedIdentifier.validate_resource_type_general(resource_type_general):
                     resource_type_general = RelatedIdentifier.get_default_resource_type_general()
 
                 related_identifier_instance, created = RelatedIdentifier.objects.update_or_create(
@@ -254,6 +253,57 @@ def import_resource(data, resource_instance=None):
                     'award_number': funding_reference_node.get('awardNumber', ''),
                     'award_uri': funding_reference_node.get('awardURI', ''),
                     'award_title': funding_reference_node.get('awardTitle', '')
+                }
+            )
+
+    # related_items
+    related_item_nodes = data.get('relatedItems')
+    if related_item_nodes and isinstance(related_item_nodes, list):
+        for related_item_node in related_item_nodes:
+            identifier = related_item_node.get('relatedItemIdentifier')
+            identifier_type = related_item_node.get('relatedItemIdentifierType')
+
+            # try to find the related item as existing resource in the database
+            try:
+                existing_resource_instance = Resource.objects.get(
+                    identifier__identifier=identifier,
+                    identifier__identifier_type=identifier_type
+                )
+            except Resource.DoesNotExist:
+                existing_resource_instance = None
+
+            # create or update the related item resource
+            item_instance = import_resource({
+                'types': {
+                    'resourceTypeGeneral': related_item_node.get('relatedItemType')
+                },
+                'identifiers': [{
+                    'identifier': identifier,
+                    'identifierType': identifier_type
+                }],
+                'creators': related_item_node.get('creators'),
+                'titles': related_item_node.get('titles'),
+                'publicationYear': related_item_node.get('publicationYear'),
+                'publisher': related_item_node.get('publisher'),
+                'contributors': related_item_node.get('contributors')
+            }, resource_instance=existing_resource_instance)
+
+            number_type = related_item_node.get('numberType')
+            if not RelatedItem.validate_number_type(number_type):
+                number_type = RelatedItem.get_default_number_type()
+
+            related_item, created = RelatedItem.objects.update_or_create(
+                resource=resource_instance,
+                item=item_instance,
+                defaults={
+                    'relation_type': related_item_node.get('relationType', ''),
+                    'volume': related_item_node.get('volume', ''),
+                    'issue': related_item_node.get('issue', ''),
+                    'number': related_item_node.get('number', ''),
+                    'number_type': number_type,
+                    'first_page': related_item_node.get('firstPage', ''),
+                    'last_page': related_item_node.get('lastPage', ''),
+                    'edition': related_item_node.get('edition', ''),
                 }
             )
 
@@ -367,7 +417,7 @@ def import_name(name_node):
 
 
 def import_geo_location(geo_location_node):
-    geo_location_place = geo_location_node.get('geoLocationPlace')
+    geo_location_place = geo_location_node.get('geoLocationPlace', '')
 
     try:
         geo_location_instance = GeoLocation.objects.get(

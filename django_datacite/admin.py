@@ -12,7 +12,8 @@ from django.utils.translation import gettext as _
 from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
                     AlternateIdentifier, RelatedIdentifier, Rights, \
                     Name, NameIdentifier, Identifier, GeoLocation, \
-                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, FundingReference
+                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
+                    FundingReference, RelatedItem
 from .imports import import_resource
 
 
@@ -112,6 +113,18 @@ class FundingReferenceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['funder'].queryset = Name.objects.filter(name_type=Name.get_affiliation_name_type())
+
+
+class RelatedItemForm(forms.ModelForm):
+    relation_type = forms.ChoiceField(
+        initial=RelatedItem.get_default_relation_type(),
+        choices=RelatedItem.get_relation_type_choices()
+    )
+    number_type = forms.ChoiceField(
+        initial=RelatedItem.get_default_number_type(),
+        choices=RelatedItem.get_number_type_choices(),
+        required=False
+    )
 
 
 class NameForm(forms.ModelForm):
@@ -245,6 +258,12 @@ class FundingReferenceInline(NoExtraInlineMixin, admin.StackedInline):
     model = FundingReference
 
 
+class RelatedItemInline(NoExtraInlineMixin, admin.StackedInline):
+    form = RelatedItemForm
+    model = RelatedItem
+    fk_name = 'resource'
+
+
 class NameIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = NameIdentifierForm
     model = NameIdentifier
@@ -257,7 +276,8 @@ class ResourceAdmin(admin.ModelAdmin):
     inlines = (TitleInline, DescriptionInline, CreatorInline,
                ContributorInline, SubjectInline, DateInline,
                AlternateIdentifierInline, RelatedIdentifierInline,
-               RightsInline, GeoLocationInline, FundingReferenceInline)
+               RightsInline, GeoLocationInline, FundingReferenceInline,
+               RelatedItemInline)
 
     search_fields = ('identifier', )
     readonly_fields = ('citation', )
@@ -291,7 +311,7 @@ class ResourceAdmin(admin.ModelAdmin):
                 if pk is not None:
                     return redirect('admin:datacite_resource_change', object_id=pk)
                 else:
-                    return redirect('admin:datacite_resource_list')
+                    return redirect('admin:datacite_resource_changelist')
 
             elif '_send' in request.POST and form.is_valid():
                 resource = import_resource(form.cleaned_data['data'], resource)
@@ -337,7 +357,7 @@ class IdentifierAdmin(admin.ModelAdmin):
     search_fields = ('identifier', )
 
     def get_readonly_fields(self, request, obj=None):
-        return ['citation'] if (obj and obj.resources_as_identifier.exists()) else []
+        return ['citation'] if (obj and obj.as_identifier.exists()) else []
 
 
 class GeoLocationAdmin(admin.ModelAdmin):

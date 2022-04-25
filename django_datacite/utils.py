@@ -135,6 +135,11 @@ def serialize_resource(resource):
     if funding_references:
         data['fundingReferences'] = [serialize_funding_references(funding_reference) for funding_reference in funding_references]
 
+    # related items
+    related_items = resource.relateditem_set.all()
+    if related_items:
+        data['relatedItems'] = [serialize_related_item(related_item) for related_item in related_items]
+
     return data
 
 
@@ -296,6 +301,76 @@ def serialize_funding_references(funding_reference):
 
     if funding_reference.award_title:
         data['awardTitle'] = funding_reference.award_title
+
+    return data
+
+
+def serialize_related_item(related_item):
+    data = {}
+
+    # related_item_type
+    if related_item.item.resource_type_general:
+        data['relatedItemType'] = related_item.item.resource_type_general
+
+    # related_item_type
+    if related_item.relation_type:
+        data['relationType'] = related_item.relation_type
+
+    # related_item_identifier
+    if related_item.item.identifier:
+        data['relatedItemIdentifier'] = related_item.item.identifier.identifier
+        data['relatedItemIdentifierType'] = related_item.item.identifier.identifier_type
+
+    # creators
+    creators = related_item.item.creator_set.order_by('order', 'name')
+    if creators:
+        data['creators'] = [serialize_name(creator.name) for creator in creators]
+
+    # titles
+    titles = related_item.item.titles.all()
+    if titles:
+        data['titles'] = [serialize_title(title) for title in titles]
+
+    # publication_year
+    if related_item.item.publication_year is not None:
+        data['publicationYear'] = str(related_item.item.publication_year)
+
+    # volume
+    if related_item.volume:
+        data['volume'] = related_item.volume
+
+    # issue
+    if related_item.issue:
+        data['issue'] = related_item.issue
+
+    # number
+    if related_item.number:
+        data['number'] = related_item.number
+
+    # numberType
+    if related_item.number_type:
+        data['numberType'] = related_item.number_type
+
+    # firstPage
+    if related_item.first_page:
+        data['firstPage'] = related_item.first_page
+
+    # lastPage
+    if related_item.last_page:
+        data['lastPage'] = related_item.last_page
+
+    # publisher
+    if related_item.item.publisher:
+        data['publisher'] = related_item.item.publisher
+
+    # edition
+    if related_item.edition:
+        data['edition'] = related_item.edition
+
+    # contributors
+    contributors = related_item.item.contributor_set.order_by('order', 'name')
+    if contributors:
+        data['contributors'] = [serialize_name(contributor.name, contributor.contributor_type) for contributor in contributors]
 
     return data
 

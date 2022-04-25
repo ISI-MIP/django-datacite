@@ -207,3 +207,11 @@ DATACITE_RIGHTS_IDENTIFIER_SCHEMES = {
 DATACITE_RIGHTS_IDENTIFIER_SCHEME_URIS = {
     'SPDX': 'https://spdx.org/licenses/'
 }
+
+DATACITE_DEFAULT_NUMBER_TYPE = 'Article'
+DATACITE_NUMBER_TYPES = (
+    ('Article', 'Article'),
+    ('Chapter', 'Chapter'),
+    ('Report', 'Report'),
+    ('Other', 'Other')
+)

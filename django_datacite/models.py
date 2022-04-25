@@ -10,7 +10,7 @@ from .validators import validate_polygon_points
 class Resource(models.Model):
 
     identifier = models.ForeignKey(
-        'Identifier', null=True, blank=True, on_delete=models.SET_NULL, related_name='resources_as_identifier'
+        'Identifier', null=True, blank=True, on_delete=models.SET_NULL, related_name='as_identifier'
     )
     publisher = models.CharField(
         max_length=256, blank=True
@@ -46,22 +46,25 @@ class Resource(models.Model):
         default=True
     )
     creators = models.ManyToManyField(
-        'Name', through='Creator', blank=True, related_name='resources_as_creator'
+        'Name', through='Creator', blank=True, related_name='as_creator'
     )
     contributors = models.ManyToManyField(
-        'Name', through='Contributor', blank=True, related_name='resources_as_contributor'
+        'Name', through='Contributor', blank=True, related_name='as_contributor'
     )
     alternate_identifiers = models.ManyToManyField(
-        'Identifier', through='AlternateIdentifier', blank=True, related_name='resources_as_alternate_identifier'
+        'Identifier', through='AlternateIdentifier', blank=True, related_name='as_alternate_identifier'
     )
     related_identifiers = models.ManyToManyField(
-        'Identifier', through='RelatedIdentifier', blank=True, related_name='resources_as_related_identifier'
+        'Identifier', through='RelatedIdentifier', blank=True, related_name='as_related_identifier'
     )
     geo_locations = models.ManyToManyField(
-        'GeoLocation', blank=True, related_name='geo_locations'
+        'GeoLocation', blank=True, related_name='resources'
     )
     funding_references = models.ManyToManyField(
-        'Name', through='FundingReference', blank=True, related_name='resources_as_funding_reference'
+        'Name', through='FundingReference', blank=True, related_name='as_funder'
+    )
+    related_items = models.ManyToManyField(
+        'Resource', through='RelatedItem', blank=True, related_name='as_related_item'
     )
 
     def __str__(self):
@@ -162,6 +165,19 @@ class Resource(models.Model):
                 award_uri=funding_reference.award_uri,
                 award_title=funding_reference.award_title
             ).save()
+        for related_item in self.relateditem_set.all():
+            RelatedItem(
+                resource=resource,
+                item=related_item.item,
+                relation_type=related_item.relation_type,
+                volume=related_item.volume,
+                issue=related_item.issue,
+                number=related_item.number,
+                number_type=related_item.number_type,
+                first_page=related_item.first_page,
+                last_page=related_item.last_page,
+                edition=related_item.edition
+            ).save()
 
         return resource
 
@@ -253,7 +269,7 @@ class Name(models.Model):
         max_length=256, blank=True
     )
     affiliations = models.ManyToManyField(
-        'Name', blank=True, related_name='names_as_affiliations'
+        'Name', blank=True, related_name='as_affiliation'
     )
 
     @staticmethod
@@ -314,7 +330,7 @@ class Creator(models.Model):
         'Resource', on_delete=models.CASCADE
     )
     name = models.ForeignKey(
-        'Name', related_name='creator', on_delete=models.CASCADE
+        'Name', on_delete=models.CASCADE
     )
     order = models.PositiveIntegerField(
         default=0
@@ -324,7 +340,7 @@ class Creator(models.Model):
         ordering = ('order', 'name')
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.resource} - {self.name}'
 
 
 class Contributor(models.Model):
@@ -346,7 +362,7 @@ class Contributor(models.Model):
         ordering = ('order', 'name')
 
     def __str__(self):
-        return f'{self.contributor_type}: {self.name}'
+        return f'{self.resource} - ({self.contributor_type}) {self.name}'
 
     @staticmethod
     def get_default_contributor_type():
@@ -375,9 +391,9 @@ class Title(models.Model):
 
     def __str__(self):
         if self.title_type:
-            return f'{self.title_type}: {self.title}'
+            return f'{self.resource} - ({self.title_type}) {self.title}'
         else:
-            return self.title
+            return f'{self.resource} - {self.title}'
 
     @staticmethod
     def get_default_title_type():
@@ -403,7 +419,7 @@ class Description(models.Model):
     )
 
     def __str__(self):
-        return f'{self.description_type} : {self.resource}'
+        return f'{self.resource} - {self.description_type}'
 
     @cached_property
     def escaped_description(self):
@@ -444,7 +460,7 @@ class Subject(models.Model):
     )
 
     def __str__(self):
-        return self.subject
+        return f'{self.resource} - {self.subject}'
 
 
 class Date(models.Model):
@@ -461,7 +477,7 @@ class Date(models.Model):
     )
 
     def __str__(self):
-        return f'{self.date_type}: {self.date}'
+        return f'{self.resource} - ({self.date_type}) {self.date}'
 
     @staticmethod
     def get_default_date_type():
@@ -489,7 +505,7 @@ class AlternateIdentifier(models.Model):
     )
 
     def __str__(self):
-        return str(self.identifier)
+        return f'{self.resource} - {self.identifier}'
 
 
 class RelatedIdentifier(models.Model):
@@ -511,7 +527,7 @@ class RelatedIdentifier(models.Model):
     )
 
     def __str__(self):
-        return str(self.identifier)
+        return f'{self.resource} - ({self.relation_type}) {self.identifier}'
 
     @staticmethod
     def get_default_relation_type():
@@ -551,7 +567,7 @@ class Rights(models.Model):
         verbose_name_plural = 'Rights'
 
     def __str__(self):
-        return self.rights_identifier
+        return f'{self.resource} - {self.rights_identifier}'
 
     @property
     def rights(self):
@@ -684,3 +700,67 @@ class FundingReference(models.Model):
     award_title = models.CharField(
         max_length=256, blank=True
     )
+
+    def __str__(self):
+        return f'{self.resource} - {self.funder}'
+
+
+class RelatedItem(models.Model):
+
+    resource = models.ForeignKey(
+        'Resource', on_delete=models.CASCADE
+    )
+    item = models.ForeignKey(
+        'Resource', related_name='+', on_delete=models.CASCADE
+    )
+    relation_type = models.CharField(
+        max_length=32, blank=True
+    )
+    volume = models.CharField(
+        max_length=256, blank=True
+    )
+    issue = models.CharField(
+        max_length=256, blank=True
+    )
+    number = models.CharField(
+        max_length=256, blank=True
+    )
+    number_type = models.CharField(
+        max_length=32, blank=True
+    )
+    first_page = models.CharField(
+        max_length=256, blank=True
+    )
+    last_page = models.CharField(
+        max_length=256, blank=True
+    )
+    edition = models.CharField(
+        max_length=256, blank=True
+    )
+
+    def __str__(self):
+        return f'{self.resource} - ({self.relation_type}) {self.item}'
+
+    @staticmethod
+    def get_default_relation_type():
+        return get_settings('DATACITE_DEFAULT_RELATION_TYPE')
+
+    @staticmethod
+    def get_relation_type_choices():
+        return get_settings('DATACITE_RELATION_TYPES')
+
+    @classmethod
+    def validate_relation_type(cls, relation_type):
+        return relation_type in dict(cls.get_relation_type_choices())
+
+    @staticmethod
+    def get_default_number_type():
+        return get_settings('DATACITE_DEFAULT_NUMBER_TYPE')
+
+    @staticmethod
+    def get_number_type_choices():
+        return get_settings('DATACITE_NUMBER_TYPES')
+
+    @classmethod
+    def validate_number_type(cls, number_type):
+        return number_type in dict(cls.get_number_type_choices())
