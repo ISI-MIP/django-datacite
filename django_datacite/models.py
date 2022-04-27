@@ -332,7 +332,7 @@ class Creator(models.Model):
     name = models.ForeignKey(
         'Name', on_delete=models.CASCADE
     )
-    order = models.PositiveIntegerField(
+    order = models.IntegerField(
         default=0
     )
 
@@ -351,7 +351,7 @@ class Contributor(models.Model):
     name = models.ForeignKey(
         'Name', on_delete=models.CASCADE
     )
-    order = models.PositiveIntegerField(
+    order = models.IntegerField(
         default=0
     )
     contributor_type = models.CharField(
@@ -500,7 +500,7 @@ class AlternateIdentifier(models.Model):
     identifier = models.ForeignKey(
         'Identifier', on_delete=models.CASCADE
     )
-    order = models.PositiveIntegerField(
+    order = models.IntegerField(
         default=0
     )
 
@@ -516,7 +516,7 @@ class RelatedIdentifier(models.Model):
     identifier = models.ForeignKey(
         'Identifier', on_delete=models.CASCADE
     )
-    order = models.PositiveIntegerField(
+    order = models.IntegerField(
         default=0
     )
     relation_type = models.CharField(

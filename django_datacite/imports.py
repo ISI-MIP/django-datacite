@@ -82,14 +82,15 @@ def import_resource(resource_instance, data):
     if creator_nodes and isinstance(creator_nodes, list):
         for order, creator_node in enumerate(creator_nodes):
             name_instance = import_name(creator_node)
-            creator_instance, created = Creator.objects.update_or_create(
-                resource=resource_instance,
-                name=name_instance,
-                defaults={
-                    'order': order
-                }
-            )
-            logger.info('Creator="%s" %s', creator_instance, 'created' if created else 'updated')
+            if name_instance:
+                creator_instance, created = Creator.objects.update_or_create(
+                    resource=resource_instance,
+                    name=name_instance,
+                    defaults={
+                        'order': order
+                    }
+                )
+                logger.info('Creator="%s" %s', creator_instance, 'created' if created else 'updated')
 
     # titles
     description_nodes = data.get('descriptions')
@@ -113,15 +114,16 @@ def import_resource(resource_instance, data):
             contributor_type = contributor_node.get('contributorType')
             if Contributor.validate_contributor_type(contributor_type):
                 name_instance = import_name(contributor_node)
-                contributor_instance, created = Contributor.objects.update_or_create(
-                    resource=resource_instance,
-                    name=name_instance,
-                    defaults={
-                        'order': order,
-                        'contributor_type': contributor_type
-                    }
-                )
-                logger.info('Contributor="%s" %s', contributor_instance, 'created' if created else 'updated')
+                if name_instance:
+                    contributor_instance, created = Contributor.objects.update_or_create(
+                        resource=resource_instance,
+                        name=name_instance,
+                        defaults={
+                            'order': order,
+                            'contributor_type': contributor_type
+                        }
+                    )
+                    logger.info('Contributor="%s" %s', contributor_instance, 'created' if created else 'updated')
 
     # subjects
     subject_nodes = data.get('subjects')
@@ -243,15 +245,17 @@ def import_resource(resource_instance, data):
                     }
                 ]
             })
-            funding_reference, created = FundingReference.objects.update_or_create(
-                resource=resource_instance,
-                funder=funder_instance,
-                defaults={
-                    'award_number': funding_reference_node.get('awardNumber', ''),
-                    'award_uri': funding_reference_node.get('awardURI', ''),
-                    'award_title': funding_reference_node.get('awardTitle', '')
-                }
-            )
+            if name_instance:
+                funding_reference_instance, created = FundingReference.objects.update_or_create(
+                    resource=resource_instance,
+                    funder=funder_instance,
+                    defaults={
+                        'award_number': funding_reference_node.get('awardNumber', ''),
+                        'award_uri': funding_reference_node.get('awardURI', ''),
+                        'award_title': funding_reference_node.get('awardTitle', '')
+                    }
+                )
+                logger.info('FundingReference="%s" %s', funding_reference_instance, 'created' if created else 'updated')
 
     # related_items
     related_item_nodes = data.get('relatedItems')
@@ -289,7 +293,7 @@ def import_resource(resource_instance, data):
             if not RelatedItem.validate_number_type(number_type):
                 number_type = RelatedItem.get_default_number_type()
 
-            related_item, created = RelatedItem.objects.update_or_create(
+            related_item_instance, created = RelatedItem.objects.update_or_create(
                 resource=resource_instance,
                 item=item_instance,
                 defaults={
@@ -303,6 +307,7 @@ def import_resource(resource_instance, data):
                     'edition': related_item_node.get('edition', ''),
                 }
             )
+            logger.info('RelatedItem="%s" %s', related_item_instance, 'created' if created else 'updated')
 
     return resource_instance
 
@@ -344,7 +349,6 @@ def import_name(name_node):
                         name_identifier_scheme=name_identifier_scheme
                     )
                     logger.info('NameIdentifier="%s" created', name_identifier_instance)
-
                 name_identifier_instances.append(name_identifier_instance)
 
     # search for affiliations
@@ -375,13 +379,18 @@ def import_name(name_node):
                     affiliation_instances.append(affiliation_instance)
 
     # find (using the name_identifier_instances or the exact name) or create name
+    name = name_node.get('name')
+    given_name = name_node.get('givenName')
+    family_name = name_node.get('familyName')
     try:
         name_instance = Name.objects.get(name_identifiers__in=name_identifier_instances)
         logger.info('Name="%s" found by NameIdentifier', name_instance)
     except Name.DoesNotExist:
-        name = name_node.get('name')
         if name is None:
-            return
+            if given_name and family_name:
+                name = f'{given_name} {family_name}'
+            else:
+                return
 
         try:
             name_instance = Name.objects.get(name=name)
@@ -395,8 +404,8 @@ def import_name(name_node):
             logger.info('Name="%s" created', name_instance)
 
     # update the name instance
-    name_instance.given_name = name_node.get('givenName', '')
-    name_instance.family_name = name_node.get('familyName', '')
+    name_instance.given_name = given_name or ''
+    name_instance.family_name = family_name or ''
     name_instance.save()
 
     # update name identifiers
@@ -414,20 +423,10 @@ def import_name(name_node):
 
 
 def import_geo_location(geo_location_node):
-    geo_location_place = geo_location_node.get('geoLocationPlace', '')
-
-    try:
-        geo_location_instance = GeoLocation.objects.get(
-            geo_location_place=geo_location_place
-        )
-        logger.info('GeoLocation="%s" found', geo_location_instance)
-    except GeoLocation.DoesNotExist:
-        geo_location_instance = GeoLocation(
-            geo_location_place=geo_location_place
-        )
-        logger.info('GeoLocation="%s" created', geo_location_instance)
-
-    geo_location_instance.save()
+    geo_location_instance, created = GeoLocation.objects.update_or_create(
+        geo_location_place=geo_location_node.get('geoLocationPlace', '')
+    )
+    logger.info('GeoLocation="%s" %s', geo_location_instance, 'created' if created else 'updated')
 
     geo_location_point = geo_location_node.get('geoLocationPoint')
     if geo_location_point and \

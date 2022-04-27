@@ -1,4 +1,4 @@
-{% for creator in resource.creators.all %}{% if creator.given_name and creator.family_name %}{{ creator.family_name }}, {{ creator.given_name }}{% else %}{{ creator.name }}{% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}
+{% for creator in resource.creator_set.all %}{% if creator.name.given_name and creator.name.family_name %}{{ creator.name.family_name }}, {{ creator.name.given_name }}{% else %}{{ creator.name.name }}{% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}
 ({{ resource.publication_year }}):
 {{ resource.title }}.
 {% if resource.cite_version %}Version {{ resource.version }}.{% endif %}
