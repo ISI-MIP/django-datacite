@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
-from .settings import DOI_BASE_URL
+from .utils import get_settings
 
 
 def export_resource(resource):
@@ -216,7 +216,7 @@ def export_related_identifiers(related_identifier):
 
     # add DOI_BASE_URL to DOI
     if data['relatedIdentifierType'] == 'DOI' and not data['relatedIdentifier'].startswith('http'):
-        data['relatedIdentifier'] = DOI_BASE_URL + data['relatedIdentifier']
+        data['relatedIdentifier'] = get_settings('DOI_BASE_URL') + data['relatedIdentifier']
 
     if getattr(settings, 'DATACITE_INCLUDE_CITATION', False):
         data['citation'] = related_identifier.identifier.citation

@@ -239,7 +239,11 @@ class Identifier(models.Model):
     )
 
     def __str__(self):
-        return f'({self.identifier_type}) {self.identifier}'
+        if self.identifier_type == 'DOI':
+            doi_base_url = get_settings('DOI_BASE_URL')
+            return f'({self.identifier_type}) {doi_base_url}{self.identifier}'
+        else:
+            return f'({self.identifier_type}) {self.identifier}'
 
     @staticmethod
     def get_default_identifier_type():

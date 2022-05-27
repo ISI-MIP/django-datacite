@@ -8,7 +8,7 @@ from .models import Resource, Title, Description, Creator, Contributor, Subject,
                     Name, NameIdentifier, Identifier, GeoLocation, \
                     GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
                     FundingReference, RelatedItem
-from .settings import DOI_BASE_URL
+from .utils import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -320,7 +320,7 @@ def import_identifier(identifier_node):
     identifier_type = identifier_node.get('identifierType')
 
     if identifier_type == 'DOI':
-        identifier = identifier.replace(DOI_BASE_URL, '')
+        identifier = identifier.replace(get_settings('DOI_BASE_URL'), '')
 
     if identifier and Identifier.validate_identifier_type(identifier_type):
         identifier_instance, created = Identifier.objects.update_or_create(
