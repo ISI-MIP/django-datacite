@@ -1,5 +1,7 @@
 from django.utils.translation import gettext as _
 
+DOI_BASE_URL = 'https://doi.org/'
+
 DATACITE_DEFAULT_IDENTIFIER_TYPE = 'DOI'
 DATACITE_IDENTIFIER_TYPES = (
     ('ARK', _('ARK')),

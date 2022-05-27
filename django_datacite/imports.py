@@ -1,3 +1,4 @@
+import os
 import logging
 
 from django.utils.dateparse import parse_date
@@ -7,6 +8,7 @@ from .models import Resource, Title, Description, Creator, Contributor, Subject,
                     Name, NameIdentifier, Identifier, GeoLocation, \
                     GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
                     FundingReference, RelatedItem
+from .settings import DOI_BASE_URL
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +105,7 @@ def import_resource(resource_instance, data):
                     description_type=description_type,
                     defaults={
                         'description': description_node.get('description', '')
+                                                       .replace('<br>', os.linesep + os.linesep)
                     }
                 )
                 logger.info('Description="%s" %s', description_instance, 'created' if created else 'updated')
@@ -315,6 +318,9 @@ def import_resource(resource_instance, data):
 def import_identifier(identifier_node):
     identifier = identifier_node.get('identifier')
     identifier_type = identifier_node.get('identifierType')
+
+    if identifier_type == 'DOI':
+        identifier = identifier.replace(DOI_BASE_URL, '')
 
     if identifier and Identifier.validate_identifier_type(identifier_type):
         identifier_instance, created = Identifier.objects.update_or_create(
