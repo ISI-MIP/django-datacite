@@ -4,24 +4,23 @@ import requests
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse, Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
 from django.utils.translation import gettext as _
 
-
 from .exports import export_resource
 from .imports import import_resource
-from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
-                    AlternateIdentifier, RelatedIdentifier, Rights, \
-                    Name, NameIdentifier, Identifier, GeoLocation, \
-                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
-                    FundingReference, RelatedItem
+from .models import (AlternateIdentifier, Contributor, Creator, Date,
+                     Description, FundingReference, GeoLocation,
+                     GeoLocationBox, GeoLocationPoint, GeoLocationPolygon,
+                     Identifier, Name, NameIdentifier, RelatedIdentifier,
+                     RelatedItem, Resource, Rights, Subject, Title)
 from .renderers import XMLRenderer
 from .utils import render_bibtex
 
-
 # Forms
+
 
 class ResourceForm(forms.ModelForm):
     resource_type_general = forms.ChoiceField(
@@ -203,12 +202,14 @@ class DescriptionInline(NoExtraInlineMixin, admin.StackedInline):
 class CreatorInline(NoExtraInlineMixin, admin.TabularInline):
     model = Creator
     autocomplete_fields = ('name', )
+    ordering = ('order', 'name')
 
 
 class ContributorInline(NoExtraInlineMixin, admin.TabularInline):
     form = ContributorForm
     model = Contributor
     autocomplete_fields = ('name', )
+    ordering = ('order', 'name')
 
 
 class SubjectInline(NoExtraInlineMixin, admin.StackedInline):
@@ -223,12 +224,14 @@ class DateInline(NoExtraInlineMixin, admin.TabularInline):
 class AlternateIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     model = AlternateIdentifier
     autocomplete_fields = ('identifier', )
+    ordering = ('order', 'identifier')
 
 
 class RelatedIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = RelatedIdentifierForm
     model = RelatedIdentifier
     autocomplete_fields = ('identifier', )
+    ordering = ('order', 'identifier')
 
 
 class RightsInline(NoExtraInlineMixin, admin.TabularInline):
@@ -289,6 +292,7 @@ class ResourceAdmin(admin.ModelAdmin):
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
     list_filter = ('resource_type_general', )
     autocomplete_fields = ('identifier', )
+    ordering = ('identifier', )
 
     def get_urls(self):
         return [
@@ -374,6 +378,7 @@ class NameAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_type')
     list_filter = ('name_type', )
     search_fields = ('name', 'name_identifiers__name_identifier')
+    ordering = ('family_name', 'name')
 
 
 class IdentifierAdmin(admin.ModelAdmin):
@@ -381,6 +386,7 @@ class IdentifierAdmin(admin.ModelAdmin):
     list_display = ('identifier', 'identifier_type')
     list_filter = ('identifier_type', )
     search_fields = ('identifier', )
+    ordering = ('identifier', )
 
     def get_readonly_fields(self, request, obj=None):
         return ['citation'] if (obj and obj.as_identifier.exists()) else []

@@ -62,15 +62,15 @@ def export_resource(resource):
         data['language'] = resource.language
 
     # alternate identifiers
-    alternate_identifiers = resource.alternate_identifiers.all()
+    alternate_identifiers = resource.alternateidentifier_set.order_by('order')
     if alternate_identifiers:
         data['alternateIdentifiers'] = [{
-            'alternateIdentifier': alternate_identifier.identifier,
-            'alternateIdentifierType': alternate_identifier.identifier_type
+            'alternateIdentifier': alternate_identifier.identifier.identifier,
+            'alternateIdentifierType': alternate_identifier.identifier.identifier_type
         } for alternate_identifier in alternate_identifiers]
 
     # related identifiers
-    related_identifiers = resource.relatedidentifier_set.all()
+    related_identifiers = resource.relatedidentifier_set.order_by('order')
     if related_identifiers:
         data['relatedIdentifiers'] = [export_related_identifiers(related_identifier) for related_identifier in related_identifiers]
 
