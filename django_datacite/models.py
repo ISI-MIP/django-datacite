@@ -1,9 +1,11 @@
-from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.http import Http404
+from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 
-from .utils import get_settings, get_display_name, render_citation
+from .utils import get_display_name, get_settings, render_citation
 from .validators import validate_polygon_points, validate_resource
 
 
@@ -196,6 +198,12 @@ class Resource(models.Model):
     @cached_property
     def citation(self):
         return render_citation(self)
+
+    def get_absolute_url(self):
+        try:
+            return reverse('datacite_resource', args=[self.identifier.identifier])
+        except NoReverseMatch:
+            raise Http404
 
     @staticmethod
     def get_default_publisher():
