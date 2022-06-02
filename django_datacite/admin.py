@@ -286,7 +286,7 @@ class ResourceAdmin(admin.ModelAdmin):
                RightsInline, GeoLocationInline, FundingReferenceInline,
                RelatedItemInline)
 
-    search_fields = ('identifier', )
+    search_fields = ('identifier__identifier', )
     readonly_fields = ('citation', )
     exclude = ('geo_locations', )
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
