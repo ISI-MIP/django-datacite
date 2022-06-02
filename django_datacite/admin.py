@@ -292,7 +292,7 @@ class ResourceAdmin(admin.ModelAdmin):
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
     list_filter = ('resource_type_general', )
     autocomplete_fields = ('identifier', )
-    ordering = ('identifier', )
+    ordering = ('identifier__identifier', )
 
     def get_urls(self):
         return [
