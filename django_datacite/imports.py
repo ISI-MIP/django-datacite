@@ -1,13 +1,13 @@
-import os
 import logging
+import os
 
 from django.utils.dateparse import parse_date
 
-from .models import Resource, Title, Description, Creator, Contributor, Subject, Date, \
-                    AlternateIdentifier, RelatedIdentifier, Rights, \
-                    Name, NameIdentifier, Identifier, GeoLocation, \
-                    GeoLocationPoint, GeoLocationBox, GeoLocationPolygon, \
-                    FundingReference, RelatedItem
+from .models import (AlternateIdentifier, Contributor, Creator, Date,
+                     Description, FundingReference, GeoLocation,
+                     GeoLocationBox, GeoLocationPoint, GeoLocationPolygon,
+                     Identifier, Name, NameIdentifier, RelatedIdentifier,
+                     RelatedItem, Resource, Rights, Subject, Title)
 from .utils import get_settings
 
 logger = logging.getLogger(__name__)
@@ -171,14 +171,15 @@ def import_resource(resource_instance, data):
                 'citation': alternate_identifier_node.get('citation', '')
             })
 
-            alternate_identifier_instance, created = AlternateIdentifier.objects.update_or_create(
-                resource=resource_instance,
-                identifier=identifier_instance,
-                defaults={
-                    'order': order
-                }
-            )
-            logger.info('AlternateIdentifier="%s" %s', alternate_identifier_instance, 'created' if created else 'updated')
+            if identifier_instance is not None:
+                alternate_identifier_instance, created = AlternateIdentifier.objects.update_or_create(
+                    resource=resource_instance,
+                    identifier=identifier_instance,
+                    defaults={
+                        'order': order
+                    }
+                )
+                logger.info('AlternateIdentifier="%s" %s', alternate_identifier_instance, 'created' if created else 'updated')
 
     # relatedIdentifiers
     related_identifier_nodes = data.get('relatedIdentifiers')
@@ -194,20 +195,21 @@ def import_resource(resource_instance, data):
                     'citation': related_identifier_node.get('citation', '')
                 })
 
-                resource_type_general = related_identifier_node.get('resourceTypeGeneral')
-                if not RelatedIdentifier.validate_resource_type_general(resource_type_general):
-                    resource_type_general = RelatedIdentifier.get_default_resource_type_general()
+                if identifier_instance is not None:
+                    resource_type_general = related_identifier_node.get('resourceTypeGeneral')
+                    if not RelatedIdentifier.validate_resource_type_general(resource_type_general):
+                        resource_type_general = RelatedIdentifier.get_default_resource_type_general()
 
-                related_identifier_instance, created = RelatedIdentifier.objects.update_or_create(
-                    resource=resource_instance,
-                    identifier=identifier_instance,
-                    defaults={
-                        'order': order,
-                        'relation_type': relation_type,
-                        'resource_type_general': resource_type_general
-                    }
-                )
-                logger.info('RelatedIdentifier="%s" %s', related_identifier_instance, 'created' if created else 'updated')
+                    related_identifier_instance, created = RelatedIdentifier.objects.update_or_create(
+                        resource=resource_instance,
+                        identifier=identifier_instance,
+                        defaults={
+                            'order': order,
+                            'relation_type': relation_type,
+                            'resource_type_general': resource_type_general
+                        }
+                    )
+                    logger.info('RelatedIdentifier="%s" %s', related_identifier_instance, 'created' if created else 'updated')
 
     # rightsList
     right_list_node = data.get('rightsList')
