@@ -4,6 +4,7 @@ import requests
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
@@ -197,6 +198,9 @@ class TitleInline(NoExtraInlineMixin, admin.TabularInline):
 class DescriptionInline(NoExtraInlineMixin, admin.StackedInline):
     form = DescriptionForm
     model = Description
+    formfield_overrides = {
+        models.TextField: {'widget': forms.Textarea(attrs={'rows': 30, 'cols': 40, 'class': 'vLargeTextField'})},
+    }
 
 
 class CreatorInline(NoExtraInlineMixin, admin.TabularInline):
