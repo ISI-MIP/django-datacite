@@ -286,11 +286,11 @@ class ResourceAdmin(admin.ModelAdmin):
                RightsInline, GeoLocationInline, FundingReferenceInline,
                RelatedItemInline)
 
-    search_fields = ('identifier__identifier', )
+    search_fields = ('identifier__identifier', 'titles__title')
     readonly_fields = ('citation', )
     exclude = ('geo_locations', )
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
-    list_filter = ('resource_type_general', )
+    list_filter = ('resource_type_general', 'publisher', 'publication_year', 'version')
     autocomplete_fields = ('identifier', )
     ordering = ('identifier__identifier', )
 
