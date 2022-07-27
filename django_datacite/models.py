@@ -516,6 +516,9 @@ class AlternateIdentifier(models.Model):
         default=0
     )
 
+    class Meta:
+        ordering = ('order', 'identifier')
+
     def __str__(self):
         return f'{self.resource} - {self.identifier}'
 
@@ -537,6 +540,9 @@ class RelatedIdentifier(models.Model):
     resource_type_general = models.CharField(
         max_length=32, blank=True
     )
+
+    class Meta:
+        ordering = ('order', 'identifier')
 
     def __str__(self):
         return f'{self.resource} - ({self.relation_type}) {self.identifier}'
