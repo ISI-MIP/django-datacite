@@ -405,6 +405,9 @@ class Title(models.Model):
         max_length=32, blank=True
     )
 
+    class Meta:
+        ordering = ('title_type', )
+
     def __str__(self):
         if self.title_type:
             return f'{self.resource} - ({self.title_type}) {self.title}'
@@ -433,6 +436,9 @@ class Description(models.Model):
     description_type = models.CharField(
         max_length=32
     )
+
+    class Meta:
+        ordering = ('description_type', )
 
     def __str__(self):
         return f'{self.resource} - {self.description_type}'
@@ -491,6 +497,9 @@ class Date(models.Model):
     date_information = models.CharField(
         max_length=256, blank=True
     )
+
+    class Meta:
+        ordering = ('date_type', )
 
     def __str__(self):
         return f'{self.resource} - ({self.date_type}) {self.date}'
@@ -587,6 +596,7 @@ class Rights(models.Model):
 
     class Meta:
         verbose_name_plural = 'Rights'
+        ordering = ('rights_identifier', )
 
     def __str__(self):
         return f'{self.resource} - {self.rights_identifier}'
