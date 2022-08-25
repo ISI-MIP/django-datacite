@@ -85,7 +85,7 @@ class Resource(models.Model):
     def copy(self):
         # create and save new instance
         resource = Resource(
-            identifier=self.identifier,
+            identifier=None,
             publisher=self.publisher,
             publication_year=self.publication_year,
             resource_type=self.resource_type,
@@ -204,6 +204,10 @@ class Resource(models.Model):
             return reverse('datacite_resource', args=[self.identifier.identifier])
         except NoReverseMatch:
             raise Http404
+
+    @staticmethod
+    def get_default_public():
+        return get_settings('DATACITE_DEFAULT_PUBLIC')
 
     @staticmethod
     def get_default_publisher():

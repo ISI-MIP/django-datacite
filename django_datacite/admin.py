@@ -38,6 +38,7 @@ class ResourceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.instance.pk:
+            self.initial['public'] = Resource.get_default_public()
             self.initial['publisher'] = Resource.get_default_publisher()
 
 
