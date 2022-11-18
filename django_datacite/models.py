@@ -447,6 +447,10 @@ class Description(models.Model):
     def escaped_description(self):
         return self.description.replace('\r\n', '\n').replace('\n\n', '<br>').replace('\n', ' ')
 
+    @cached_property
+    def escaped_description_paragraphs(self):
+        return self.escaped_description.split('<br>')
+
     @staticmethod
     def get_default_description_type():
         return get_settings('DATACITE_DEFAULT_DESCRIPTION_TYPE')
