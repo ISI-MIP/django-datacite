@@ -201,7 +201,7 @@ class Resource(models.Model):
 
     def get_absolute_url(self):
         try:
-            return reverse('datacite_resource', args=[self.identifier.identifier])
+            return reverse('django_datacite:resource', args=[self.identifier.identifier])
         except NoReverseMatch:
             raise Http404
 
