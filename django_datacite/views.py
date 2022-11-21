@@ -2,6 +2,7 @@ import json
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
+from django.urls import reverse
 
 from .exports import export_resource
 from .models import Resource
@@ -11,8 +12,17 @@ from .utils import render_bibtex
 
 def resource(request, identifier=None):
     resource = Resource.objects.filter(public=True, identifier__identifier=identifier).first()
+    resource_url = reverse('django_datacite:resource', args=[resource.identifier.identifier])
+    resource_xml_url = reverse('django_datacite:resource_xml', args=[resource.identifier.identifier])
+    resource_json_url = reverse('django_datacite:resource_json', args=[resource.identifier.identifier])
+
     if resource:
-        return render(request, 'datacite/resource.html', {'resource': resource})
+        return render(request, 'datacite/resource.html', {
+            'resource': resource,
+            'resource_absolute_uri': request.build_absolute_uri(resource_url),
+            'resource_xml_absolute_uri': request.build_absolute_uri(resource_xml_url),
+            'resource_json_absolute_uri': request.build_absolute_uri(resource_json_url)
+        })
     else:
         raise Http404
 
