@@ -12,11 +12,11 @@ from .utils import render_bibtex
 
 def resource(request, identifier=None):
     resource = Resource.objects.filter(public=True, identifier__identifier=identifier).first()
-    resource_url = reverse('django_datacite:resource', args=[resource.identifier.identifier])
-    resource_xml_url = reverse('django_datacite:resource_xml', args=[resource.identifier.identifier])
-    resource_json_url = reverse('django_datacite:resource_json', args=[resource.identifier.identifier])
 
     if resource:
+        resource_url = reverse('django_datacite:resource', args=[resource.identifier.identifier])
+        resource_xml_url = reverse('django_datacite:resource_xml', args=[resource.identifier.identifier])
+        resource_json_url = reverse('django_datacite:resource_json', args=[resource.identifier.identifier])
         return render(request, 'datacite/resource.html', {
             'resource': resource,
             'resource_absolute_uri': request.build_absolute_uri(resource_url),

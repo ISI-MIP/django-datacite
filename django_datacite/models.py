@@ -202,7 +202,7 @@ class Resource(models.Model):
     def get_absolute_url(self):
         try:
             return reverse('django_datacite:resource', args=[self.identifier.identifier])
-        except NoReverseMatch:
+        except (NoReverseMatch, AttributeError):
             raise Http404
 
     @staticmethod
