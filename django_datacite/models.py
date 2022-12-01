@@ -1,3 +1,5 @@
+import textwrap
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.http import Http404
@@ -256,6 +258,10 @@ class Identifier(models.Model):
             return f'({self.identifier_type}) {doi_base_url}{self.identifier}'
         else:
             return f'({self.identifier_type}) {self.identifier}'
+
+    @property
+    def short_citation(self):
+        return textwrap.shorten(self.citation, width=96, placeholder='...')
 
     @staticmethod
     def get_default_identifier_type():
@@ -537,7 +543,7 @@ class AlternateIdentifier(models.Model):
         ordering = ('order', 'identifier')
 
     def __str__(self):
-        return f'{self.resource} - {self.identifier}'
+        return f'{self.resource} - {self.identifier} [{self.identifier.short_citation}]'
 
 
 class RelatedIdentifier(models.Model):
@@ -562,7 +568,7 @@ class RelatedIdentifier(models.Model):
         ordering = ('order', 'identifier')
 
     def __str__(self):
-        return f'{self.resource} - ({self.relation_type}) {self.identifier}'
+        return f'{self.resource} - {self.relation_type} - {self.identifier} [{self.identifier.short_citation}]'
 
     @staticmethod
     def get_default_relation_type():
