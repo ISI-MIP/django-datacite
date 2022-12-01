@@ -229,14 +229,14 @@ class DateInline(NoExtraInlineMixin, admin.TabularInline):
 class AlternateIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     model = AlternateIdentifier
     autocomplete_fields = ('identifier', )
-    ordering = ('order', 'identifier')
+    ordering = ('order', 'identifier__citation')
 
 
 class RelatedIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = RelatedIdentifierForm
     model = RelatedIdentifier
     autocomplete_fields = ('identifier', )
-    ordering = ('order', 'identifier')
+    ordering = ('order', 'identifier__citation')
 
 
 class RightsInline(NoExtraInlineMixin, admin.TabularInline):

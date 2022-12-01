@@ -540,7 +540,7 @@ class AlternateIdentifier(models.Model):
     )
 
     class Meta:
-        ordering = ('order', 'identifier')
+        ordering = ('resource', 'order', 'identifier__citation')
 
     def __str__(self):
         return f'{self.resource} - {self.identifier} [{self.identifier.short_citation}]'
@@ -565,7 +565,7 @@ class RelatedIdentifier(models.Model):
     )
 
     class Meta:
-        ordering = ('order', 'identifier')
+        ordering = ('resource', 'order', 'identifier__citation')
 
     def __str__(self):
         return f'{self.resource} - {self.relation_type} - {self.identifier} [{self.identifier.short_citation}]'
