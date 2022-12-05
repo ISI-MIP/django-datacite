@@ -253,15 +253,19 @@ class Identifier(models.Model):
     )
 
     def __str__(self):
-        if self.identifier_type == 'DOI':
-            doi_base_url = get_settings('DOI_BASE_URL')
-            return f'({self.identifier_type}) {doi_base_url}{self.identifier}'
-        else:
-            return f'({self.identifier_type}) {self.identifier}'
+        return f'({self.identifier_type}) {self.url}'
 
     @property
     def short_citation(self):
         return textwrap.shorten(self.citation, width=96, placeholder='...')
+
+    @property
+    def url(self):
+        if self.identifier_type == 'DOI':
+            doi_base_url = get_settings('DOI_BASE_URL')
+            return f'{doi_base_url}{self.identifier}'
+        else:
+            return self.identifier
 
     @staticmethod
     def get_default_identifier_type():
@@ -328,6 +332,10 @@ class NameIdentifier(models.Model):
 
     def __str__(self):
         return f'({self.name_identifier_scheme}) {self.name_identifier}'
+
+    @property
+    def url(self):
+        return self.scheme_uri + '/' + self.name_identifier
 
     @property
     def scheme_uri(self):

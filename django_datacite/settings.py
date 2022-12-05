@@ -26,10 +26,10 @@ DATACITE_IDENTIFIER_TYPES = (
 )
 
 DATACITE_IDENTIFIER_SCHEME_URIS = {
-    'ISNI': 'https://isni.org/',
+    'ISNI': 'https://isni.org',
     'ORCID': 'https://orcid.org',
-    'ROR': 'https://ror.org/',
-    'GRID': 'https://www.grid.ac/'
+    'ROR': 'https://ror.org',
+    'GRID': 'https://www.grid.ac'
 }
 
 DATACITE_DEFAULT_RESOURCE_TYPE_GENERAL = 'Dataset'
