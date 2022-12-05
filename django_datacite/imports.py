@@ -333,6 +333,7 @@ def import_identifier(identifier_node):
         if created:
             # set citation only when the instance is initially created
             identifier_instance.citation = identifier_node.get('citation', '')
+            identifier_instance.save()
 
         logger.info('Identifier="%s" %s', identifier_instance, 'created' if created else 'updated')
         return identifier_instance
