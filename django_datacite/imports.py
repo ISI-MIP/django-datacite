@@ -327,11 +327,13 @@ def import_identifier(identifier_node):
     if identifier and Identifier.validate_identifier_type(identifier_type):
         identifier_instance, created = Identifier.objects.update_or_create(
             identifier=identifier,
-            identifier_type=identifier_type,
-            defaults={
-                'citation': identifier_node.get('citation', '')
-            }
+            identifier_type=identifier_type
         )
+
+        if created:
+            # set citation only when the instance is initially created
+            identifier_instance.citation = identifier_node.get('citation', '')
+
         logger.info('Identifier="%s" %s', identifier_instance, 'created' if created else 'updated')
         return identifier_instance
 
@@ -408,13 +410,10 @@ def import_name(name_node):
             if not Name.validate_name_type(name_type):
                 return
 
-            name_instance = Name(name=name, name_type=name_type)
+            name_instance = Name(name=name, name_type=name_type,
+                                 given_name=given_name, family_name=family_name)
+            name_instance.save()
             logger.info('Name="%s" created', name_instance)
-
-    # update the name instance
-    name_instance.given_name = given_name or ''
-    name_instance.family_name = family_name or ''
-    name_instance.save()
 
     # update name identifiers
     for name_identifier_instance in name_identifier_instances:
