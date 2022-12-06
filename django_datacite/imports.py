@@ -412,7 +412,7 @@ def import_name(name_node):
                 return
 
             name_instance = Name(name=name, name_type=name_type,
-                                 given_name=given_name, family_name=family_name)
+                                 given_name=given_name or '', family_name=family_name or '')
             name_instance.save()
             logger.info('Name="%s" created', name_instance)
 
