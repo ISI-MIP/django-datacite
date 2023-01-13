@@ -117,7 +117,8 @@ class FundingReferenceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['funder'].queryset = Name.objects.filter(name_type=Name.get_affiliation_name_type())
+        self.fields['funder'].queryset = Name.objects.filter(name_type=Name.get_affiliation_name_type()) \
+                                                     .order_by('name')
 
 
 class RelatedItemForm(forms.ModelForm):
@@ -137,10 +138,12 @@ class NameForm(forms.ModelForm):
         initial=Name.get_default_name_type(),
         choices=Name.get_name_type_choices()
     )
-    affiliations = forms.ModelMultipleChoiceField(
-        queryset=Name.objects.filter(name_type=Name.get_affiliation_name_type()),
-        required=False
-    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['affiliations'].queryset = Name.objects.filter(name_type=Name.get_affiliation_name_type()) \
+                                                           .order_by('name')
+        self.fields['affiliations'].required = False
 
 
 class NameIdentifierForm(forms.ModelForm):
@@ -384,6 +387,7 @@ class NameAdmin(admin.ModelAdmin):
     list_filter = ('name_type', )
     search_fields = ('name', 'name_identifiers__name_identifier')
     ordering = ('family_name', 'name')
+    filter_horizontal = ('affiliations', )
 
 
 class IdentifierAdmin(admin.ModelAdmin):
