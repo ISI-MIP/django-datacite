@@ -17,7 +17,7 @@ def export_resource(resource):
         }]
 
     # creators
-    creators = resource.creator_set.order_by('order', 'name')
+    creators = resource.creator_set.all()
     if creators:
         data['creators'] = [export_name(creator.name) for creator in creators]
 
@@ -48,7 +48,7 @@ def export_resource(resource):
         data['subjects'] = [export_subject(subject) for subject in subjects]
 
     # contributors
-    contributors = resource.contributor_set.order_by('order', 'name')
+    contributors = resource.contributor_set.all()
     if contributors:
         data['contributors'] = [export_name(contributor.name, contributor.contributor_type) for contributor in contributors]
 
@@ -62,7 +62,7 @@ def export_resource(resource):
         data['language'] = resource.language
 
     # alternate identifiers
-    alternate_identifiers = resource.alternateidentifier_set.order_by('order')
+    alternate_identifiers = resource.alternateidentifier_set.all()
     if alternate_identifiers:
         data['alternateIdentifiers'] = [{
             'alternateIdentifier': alternate_identifier.identifier.identifier,
@@ -70,7 +70,7 @@ def export_resource(resource):
         } for alternate_identifier in alternate_identifiers]
 
     # related identifiers
-    related_identifiers = resource.relatedidentifier_set.order_by('order')
+    related_identifiers = resource.relatedidentifier_set.all()
     if related_identifiers:
         data['relatedIdentifiers'] = [export_related_identifiers(related_identifier) for related_identifier in related_identifiers]
 
@@ -306,7 +306,7 @@ def export_related_item(related_item):
         data['relatedItemIdentifierType'] = related_item.item.identifier.identifier_type
 
     # creators
-    creators = related_item.item.creator_set.order_by('order', 'name')
+    creators = related_item.item.creator_set.all()
     if creators:
         data['creators'] = [export_name(creator.name) for creator in creators]
 
@@ -352,7 +352,7 @@ def export_related_item(related_item):
         data['edition'] = related_item.edition
 
     # contributors
-    contributors = related_item.item.contributor_set.order_by('order', 'name')
+    contributors = related_item.item.contributor_set.all()
     if contributors:
         data['contributors'] = [export_name(contributor.name, contributor.contributor_type) for contributor in contributors]
 
