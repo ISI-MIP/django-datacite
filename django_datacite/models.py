@@ -367,7 +367,7 @@ class Creator(models.Model):
     )
 
     class Meta:
-        ordering = ('order', 'name')
+        ordering = ('order', 'name__family_name', 'name__name')
 
     def __str__(self):
         return f'{self.resource} - {self.name}'
@@ -389,7 +389,7 @@ class Contributor(models.Model):
     )
 
     class Meta:
-        ordering = ('order', 'name')
+        ordering = ('order', 'name__family_name', 'name__name')
 
     def __str__(self):
         return f'{self.resource} - ({self.contributor_type}) {self.name}'
