@@ -210,14 +210,14 @@ class DescriptionInline(NoExtraInlineMixin, admin.StackedInline):
 class CreatorInline(NoExtraInlineMixin, admin.TabularInline):
     model = Creator
     autocomplete_fields = ('name', )
-    ordering = ('order', 'name')
+    ordering = ('order', 'name__family_name', 'name__name')
 
 
 class ContributorInline(NoExtraInlineMixin, admin.TabularInline):
     form = ContributorForm
     model = Contributor
     autocomplete_fields = ('name', )
-    ordering = ('order', 'name')
+    ordering = ('order', 'name__family_name', 'name__name')
 
 
 class SubjectInline(NoExtraInlineMixin, admin.StackedInline):
