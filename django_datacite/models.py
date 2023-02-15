@@ -78,7 +78,7 @@ class Resource(models.Model):
     )
 
     def __str__(self):
-        return str(self.identifier)
+        return f'{self.identifier}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -373,7 +373,7 @@ class Creator(models.Model):
         ordering = ('order', 'name__family_name', 'name__name')
 
     def __str__(self):
-        return f'{self.resource} - {self.name}'
+        return f'{self.name}'
 
 
 class Contributor(models.Model):
@@ -395,7 +395,7 @@ class Contributor(models.Model):
         ordering = ('order', 'name__family_name', 'name__name')
 
     def __str__(self):
-        return f'{self.resource} - ({self.contributor_type}) {self.name}'
+        return f'({self.contributor_type}) {self.name}'
 
     @staticmethod
     def get_default_contributor_type():
@@ -427,9 +427,9 @@ class Title(models.Model):
 
     def __str__(self):
         if self.title_type:
-            return f'{self.resource} - ({self.title_type}) {self.title}'
+            return f'({self.title_type}) {self.title}'
         else:
-            return f'{self.resource} - {self.title}'
+            return f'{self.title}'
 
     @staticmethod
     def get_default_title_type():
@@ -458,7 +458,7 @@ class Description(models.Model):
         ordering = ('description_type', )
 
     def __str__(self):
-        return f'{self.resource} - {self.description_type}'
+        return f'{self.description_type}'
 
     @cached_property
     def escaped_description(self):
@@ -500,7 +500,7 @@ class Subject(models.Model):
     )
 
     def __str__(self):
-        return self.subject
+        return f'{self.subject}'
 
 
 class Date(models.Model):
@@ -520,7 +520,7 @@ class Date(models.Model):
         ordering = ('date_type', )
 
     def __str__(self):
-        return f'{self.resource} - ({self.date_type}) {self.date}'
+        return f'({self.date_type}) {self.date}'
 
     @staticmethod
     def get_default_date_type():
@@ -551,7 +551,7 @@ class AlternateIdentifier(models.Model):
         ordering = ('resource', 'order', 'identifier__citation')
 
     def __str__(self):
-        return f'{self.resource} - {self.identifier} [{self.identifier.short_citation}]'
+        return f'{self.identifier} [{self.identifier.short_citation}]'
 
 
 class RelatedIdentifier(models.Model):
@@ -576,7 +576,7 @@ class RelatedIdentifier(models.Model):
         ordering = ('resource', 'order', 'identifier__citation')
 
     def __str__(self):
-        return f'{self.resource} - {self.relation_type} - {self.identifier} [{self.identifier.short_citation}]'
+        return f'{self.identifier} [{self.identifier.short_citation}]'
 
     @staticmethod
     def get_default_relation_type():
@@ -617,7 +617,7 @@ class Rights(models.Model):
         ordering = ('rights_identifier', )
 
     def __str__(self):
-        return f'{self.resource} - {self.rights_identifier}'
+        return f'{self.rights_identifier}'
 
     @property
     def rights(self):
@@ -752,7 +752,7 @@ class FundingReference(models.Model):
     )
 
     def __str__(self):
-        return f'{self.resource} - {self.funder}'
+        return f'{self.funder}'
 
 
 class RelatedItem(models.Model):
@@ -789,7 +789,7 @@ class RelatedItem(models.Model):
     )
 
     def __str__(self):
-        return f'{self.resource} - ({self.relation_type}) {self.item}'
+        return f'({self.relation_type}) {self.item}'
 
     @staticmethod
     def get_default_relation_type():

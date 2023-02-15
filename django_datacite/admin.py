@@ -132,6 +132,10 @@ class RelatedItemForm(forms.ModelForm):
         required=False
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['item'].queryset = Resource.objects.select_related('identifier')
+
 
 class NameForm(forms.ModelForm):
     name_type = forms.ChoiceField(
@@ -282,11 +286,19 @@ class NameIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
 
 class ResourceAdmin(admin.ModelAdmin):
     form = ResourceForm
-    inlines = (TitleInline, DescriptionInline, CreatorInline,
-               ContributorInline, DateInline,
-               AlternateIdentifierInline, RelatedIdentifierInline,
-               RightsInline, GeoLocationInline, FundingReferenceInline,
-               RelatedItemInline)
+    inlines = (
+        TitleInline,
+        DescriptionInline,
+        CreatorInline,
+        ContributorInline,
+        DateInline,
+        AlternateIdentifierInline,
+        RelatedIdentifierInline,
+        RightsInline,
+        GeoLocationInline,
+        FundingReferenceInline,
+        RelatedItemInline
+    )
 
     search_fields = ('identifier__identifier', 'titles__title')
     readonly_fields = ('citation', )
@@ -296,6 +308,9 @@ class ResourceAdmin(admin.ModelAdmin):
     autocomplete_fields = ('identifier', )
     ordering = ('identifier__identifier', )
     filter_horizontal = ('subjects', )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('creator_set__name')
 
     def get_urls(self):
         return [
