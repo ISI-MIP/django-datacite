@@ -58,6 +58,9 @@ class Resource(models.Model):
     contributors = models.ManyToManyField(
         'Name', through='Contributor', blank=True, related_name='as_contributor'
     )
+    subjects = models.ManyToManyField(
+        'Subject', blank=True, related_name='resources'
+    )
     alternate_identifiers = models.ManyToManyField(
         'Identifier', through='AlternateIdentifier', blank=True, related_name='as_alternate_identifier'
     )
@@ -480,9 +483,6 @@ class Description(models.Model):
 
 class Subject(models.Model):
 
-    resource = models.ForeignKey(
-        'Resource', related_name='subjects', on_delete=models.CASCADE,
-    )
     subject = models.CharField(
         max_length=256
     )
@@ -500,7 +500,7 @@ class Subject(models.Model):
     )
 
     def __str__(self):
-        return f'{self.resource} - {self.subject}'
+        return self.subject
 
 
 class Date(models.Model):

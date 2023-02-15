@@ -218,10 +218,6 @@ class ContributorInline(NoExtraInlineMixin, admin.TabularInline):
     autocomplete_fields = ('name', )
 
 
-class SubjectInline(NoExtraInlineMixin, admin.StackedInline):
-    model = Subject
-
-
 class DateInline(NoExtraInlineMixin, admin.TabularInline):
     form = DateForm
     model = Date
@@ -287,7 +283,7 @@ class NameIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
 class ResourceAdmin(admin.ModelAdmin):
     form = ResourceForm
     inlines = (TitleInline, DescriptionInline, CreatorInline,
-               ContributorInline, SubjectInline, DateInline,
+               ContributorInline, DateInline,
                AlternateIdentifierInline, RelatedIdentifierInline,
                RightsInline, GeoLocationInline, FundingReferenceInline,
                RelatedItemInline)
@@ -299,6 +295,7 @@ class ResourceAdmin(admin.ModelAdmin):
     list_filter = ('resource_type_general', 'publisher', 'publication_year', 'version')
     autocomplete_fields = ('identifier', )
     ordering = ('identifier__identifier', )
+    filter_horizontal = ('subjects', )
 
     def get_urls(self):
         return [
@@ -399,6 +396,12 @@ class IdentifierAdmin(admin.ModelAdmin):
         return ['citation'] if (obj and obj.as_identifier.exists()) else []
 
 
+class SubjectAdmin(admin.ModelAdmin):
+    search_fields = ('subject', )
+    list_filter = ('subject_scheme', )
+    ordering = ('subject', )
+
+
 class GeoLocationAdmin(admin.ModelAdmin):
     inlines = (GeoLocationPointInline, GeoLocationBoxInline, GeoLocationPolygonInline)
 
@@ -406,4 +409,5 @@ class GeoLocationAdmin(admin.ModelAdmin):
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(Name, NameAdmin)
 admin.site.register(Identifier, IdentifierAdmin)
+admin.site.register(Subject, SubjectAdmin)
 admin.site.register(GeoLocation, GeoLocationAdmin)
