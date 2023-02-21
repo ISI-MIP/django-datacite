@@ -246,6 +246,12 @@ class RelatedIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     autocomplete_fields = ('identifier', )
 
 
+class SubjectInline(NoExtraInlineMixin, admin.TabularInline):
+    model = Resource.subjects.through
+    verbose_name = 'Subject'
+    verbose_name_plural = 'Subjects'
+
+
 class RightsInline(NoExtraInlineMixin, admin.TabularInline):
     form = RightsForm
     model = Rights
@@ -300,6 +306,7 @@ class ResourceAdmin(admin.ModelAdmin):
         DateInline,
         AlternateIdentifierInline,
         RelatedIdentifierInline,
+        SubjectInline,
         RightsInline,
         GeoLocationInline,
         FundingReferenceInline,
@@ -308,12 +315,11 @@ class ResourceAdmin(admin.ModelAdmin):
 
     search_fields = ('identifier__identifier', 'titles__title')
     readonly_fields = ('citation', )
-    exclude = ('geo_locations', )
+    exclude = ('geo_locations', 'subjects')
     list_display = ('identifier', 'title', 'resource_type_general', 'version')
     list_filter = ('resource_type_general', 'publisher', 'publication_year', 'version')
     autocomplete_fields = ('identifier', )
     ordering = ('identifier__identifier', )
-    filter_horizontal = ('subjects', )
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('creator_set__name')
