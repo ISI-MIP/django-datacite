@@ -670,6 +670,9 @@ class GeoLocation(models.Model):
         blank=True
     )
 
+    class Meta:
+        ordering = ('geo_location_place', )
+
     def __str__(self):
         if self.geo_location_place:
             return self.geo_location_place
