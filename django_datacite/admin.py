@@ -250,6 +250,7 @@ class SubjectInline(NoExtraInlineMixin, admin.TabularInline):
     model = Resource.subjects.through
     verbose_name = 'Subject'
     verbose_name_plural = 'Subjects'
+    ordering = ('subject__subject', )
 
 
 class RightsInline(NoExtraInlineMixin, admin.TabularInline):
@@ -261,6 +262,7 @@ class GeoLocationInline(NoExtraInlineMixin, admin.StackedInline):
     model = Resource.geo_locations.through
     verbose_name = 'Geo Location'
     verbose_name_plural = 'Geo Locations'
+    ordering = ('geolocation__geo_location_place', )
 
 
 class GeoLocationPointInline(NoExtraInlineMixin, admin.TabularInline):
