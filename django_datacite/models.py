@@ -499,6 +499,9 @@ class Subject(models.Model):
         max_length=32, blank=True
     )
 
+    class Meta:
+        ordering = ('subject', )
+
     def __str__(self):
         return f'{self.subject}'
 
