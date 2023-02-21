@@ -248,6 +248,7 @@ class RelatedIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
 
 class SubjectInline(NoExtraInlineMixin, admin.TabularInline):
     model = Resource.subjects.through
+    autocomplete_fields = ('subject', )
     verbose_name = 'Subject'
     verbose_name_plural = 'Subjects'
     ordering = ('subject__subject', )
@@ -322,6 +323,11 @@ class ResourceAdmin(admin.ModelAdmin):
     list_filter = ('resource_type_general', 'publisher', 'publication_year', 'version')
     autocomplete_fields = ('identifier', )
     ordering = ('identifier__identifier', )
+
+    class Media:
+        css = {
+            'all': ('datacite/admin/css/datacite.css', )
+        }
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('creator_set__name')

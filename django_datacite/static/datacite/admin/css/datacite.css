@@ -1,0 +1,11 @@
+.field-name .select2-container {
+    width: 300px !important;
+}
+
+.field-identifier .select2-container {
+    width: 400px !important;
+}
+
+.field-subject .select2-container {
+    width: 800px !important;
+}
