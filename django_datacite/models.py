@@ -502,6 +502,14 @@ class Subject(models.Model):
     def __str__(self):
         return f'{self.subject}'
 
+    @staticmethod
+    def get_default_subject_scheme():
+        return get_settings('DATACITE_DEFAULT_SUBJECT_SCHEME')
+
+    @staticmethod
+    def get_default_subject_scheme_uri():
+        return get_settings('DATACITE_DEFAULT_SUBJECT_SCHEME_URI')
+
 
 class Date(models.Model):
 

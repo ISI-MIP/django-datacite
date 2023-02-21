@@ -217,3 +217,6 @@ DATACITE_NUMBER_TYPES = (
     ('Report', 'Report'),
     ('Other', 'Other')
 )
+
+DATACITE_DEFAULT_SUBJECT_SCHEME = ''
+DATACITE_DEFAULT_SUBJECT_SCHEME_URI = ''

@@ -164,6 +164,14 @@ class IdentifierForm(forms.ModelForm):
     )
 
 
+class SubjectForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['subject_scheme'].initial = Subject.get_default_subject_scheme()
+        self.fields['scheme_uri'].initial = Subject.get_default_subject_scheme_uri()
+
+
 class ImportForm(forms.Form):
     file = forms.FileField(required=False)
     url = forms.URLField(required=False)
@@ -230,14 +238,12 @@ class DateInline(NoExtraInlineMixin, admin.TabularInline):
 class AlternateIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     model = AlternateIdentifier
     autocomplete_fields = ('identifier', )
-    ordering = ('order', 'identifier__citation')
 
 
 class RelatedIdentifierInline(NoExtraInlineMixin, admin.TabularInline):
     form = RelatedIdentifierForm
     model = RelatedIdentifier
     autocomplete_fields = ('identifier', )
-    ordering = ('order', 'identifier__citation')
 
 
 class RightsInline(NoExtraInlineMixin, admin.TabularInline):
@@ -412,6 +418,7 @@ class IdentifierAdmin(admin.ModelAdmin):
 
 
 class SubjectAdmin(admin.ModelAdmin):
+    form = SubjectForm
     search_fields = ('subject', )
     list_filter = ('subject_scheme', )
     ordering = ('subject', )
