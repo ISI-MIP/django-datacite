@@ -132,14 +132,7 @@ class Resource(models.Model):
                 contributor_type=contributor.contributor_type
             ).save()
         for subject in self.subjects.all():
-            Subject(
-                resource=resource,
-                subject=subject.subject,
-                subject_scheme=subject.subject_scheme,
-                scheme_uri=subject.scheme_uri,
-                value_uri=subject.value_uri,
-                classification_code=subject.classification_code
-            ).save()
+            resource.subjects.add(subject)
         for date in self.dates.all():
             Date(
                 resource=resource,
