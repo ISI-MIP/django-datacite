@@ -1,0 +1,192 @@
+[
+  {
+    "model": "datacite.resource",
+    "pk": 1,
+    "fields": {
+      "public": true,
+      "identifier": 1,
+      "publisher": "Test Repository",
+      "publication_year": 2023,
+      "resource_type": "Dataset",
+      "resource_type_general": "Dataset",
+      "language": "en",
+      "size": "1000",
+      "format": "NetCDF",
+      "version": "1.0",
+      "cite_publisher": true,
+      "cite_resource_type_general": true,
+      "cite_version": true,
+      "subjects": [],
+      "geo_locations": []
+    }
+  },
+  {
+    "model": "datacite.identifier",
+    "pk": 1,
+    "fields": {
+      "identifier": "10.12345/12345",
+      "identifier_type": "DOI",
+      "citation": "Test, Tanja; Test, Tom (2023): Test Dataset. Version 1.0. Test Repository. (Dataset). https://doi.org/10.12345/12345."
+    }
+  },
+  {
+    "model": "datacite.name",
+    "pk": 1,
+    "fields": {
+      "name": "Institute of Applied Testing",
+      "name_type": "Organizational",
+      "given_name": "",
+      "family_name": "",
+      "affiliations": []
+    }
+  },
+  {
+    "model": "datacite.name",
+    "pk": 2,
+    "fields": {
+      "name": "Tom Test",
+      "name_type": "Personal",
+      "given_name": "Tom",
+      "family_name": "Test",
+      "affiliations": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "datacite.name",
+    "pk": 3,
+    "fields": {
+      "name": "Tanja Test",
+      "name_type": "Personal",
+      "given_name": "Tanja",
+      "family_name": "Test",
+      "affiliations": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "datacite.name",
+    "pk": 4,
+    "fields": {
+      "name": "Conny Contributor",
+      "name_type": "Personal",
+      "given_name": "Conny",
+      "family_name": "Contributor",
+      "affiliations": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "datacite.nameidentifier",
+    "pk": 1,
+    "fields": {
+      "name": 1,
+      "name_identifier": "Eid1thua9",
+      "name_identifier_scheme": "ROR"
+    }
+  },
+  {
+    "model": "datacite.nameidentifier",
+    "pk": 2,
+    "fields": {
+      "name": 2,
+      "name_identifier": "0000-1234-5678-0000",
+      "name_identifier_scheme": "ORCID"
+    }
+  },
+  {
+    "model": "datacite.nameidentifier",
+    "pk": 3,
+    "fields": {
+      "name": 3,
+      "name_identifier": "0000-5678-1234-0000",
+      "name_identifier_scheme": "ORCID"
+    }
+  },
+  {
+    "model": "datacite.nameidentifier",
+    "pk": 4,
+    "fields": {
+      "name": 4,
+      "name_identifier": "0000-1234-8765-0000",
+      "name_identifier_scheme": "ORCID"
+    }
+  },
+  {
+    "model": "datacite.creator",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "name": 2,
+      "order": 0
+    }
+  },
+  {
+    "model": "datacite.creator",
+    "pk": 2,
+    "fields": {
+      "resource": 1,
+      "name": 3,
+      "order": 0
+    }
+  },
+  {
+    "model": "datacite.contributor",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "name": 4,
+      "order": 0,
+      "contributor_type": "ContactPerson"
+    }
+  },
+  {
+    "model": "datacite.title",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "title": "Test Dataset",
+      "title_type": ""
+    }
+  },
+  {
+    "model": "datacite.description",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet.",
+      "description_type": "Abstract"
+    }
+  },
+  {
+    "model": "datacite.date",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "date": "2023-07-01",
+      "date_type": "Issued",
+      "date_information": ""
+    }
+  },
+  {
+    "model": "datacite.date",
+    "pk": 2,
+    "fields": {
+      "resource": 1,
+      "date": "2023-07-02",
+      "date_type": "Accepted",
+      "date_information": ""
+    }
+  },
+  {
+    "model": "datacite.rights",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "rights_identifier": "CC0-1.0"
+    }
+  }
+]
