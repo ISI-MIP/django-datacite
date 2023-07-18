@@ -1,10 +1,6 @@
 name: pytest
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
+on: ['push']
 
 jobs:
   pytest:
@@ -12,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.6', '3.11']
+        python-version: ['3.7', '3.11']
 
     services:
       postgres:
@@ -39,6 +35,7 @@ jobs:
     - name: Install package
       run: |
         python3 -m pip install --upgrade pip setuptools
+        python3 -m pip install psycopg2-binary
         python3 -m pip install coveralls
         python3 -m pip install -r requirements/pytest.txt
         python3 -m pip install .
