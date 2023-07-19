@@ -132,17 +132,8 @@ def import_resource(resource_instance, data):
     subject_nodes = data.get('subjects')
     if subject_nodes and isinstance(subject_nodes, list):
         for subject_node in subject_nodes:
-            subject_instance, created = Subject.objects.update_or_create(
-                resource=resource_instance,
-                subject=subject_node.get('subject'),
-                defaults={
-                    'subject_scheme': subject_node.get('subjectScheme', ''),
-                    'scheme_uri': subject_node.get('schemeURI', ''),
-                    'value_uri': subject_node.get('valueURI', ''),
-                    'classification_code': subject_node.get('classificationCode', '')
-                }
-            )
-            logger.info('Subject="%s" %s', subject_instance, 'created' if created else 'updated')
+            subject_instance = import_subject(subject_node)
+            resource_instance.subjects.add(subject_instance)
 
     # dates
     date_nodes = data.get('dates')
@@ -428,6 +419,47 @@ def import_name(name_node):
     name_instance.affiliations.set(affiliation_instances)
 
     return name_instance
+
+
+def import_subject(subject_node):
+    subject_instance = None
+
+    subject = subject_node.get('subject')
+    scheme_uri = subject_node.get('schemeURI', '')
+    value_uri = subject_node.get('valueURI', '')
+
+    if scheme_uri and value_uri:
+        try:
+            subject_instance = Subject.objects.get(
+                scheme_uri=scheme_uri,
+                value_uri=value_uri
+            )
+            logger.info('Subject="%s" found', subject_instance)
+        except Subject.DoesNotExist:
+            pass
+
+    if subject_instance is None:
+
+        try:
+            subject_instance = Subject.objects.get(
+                subject=subject
+            )
+            logger.info('Subject="%s" found', subject_instance)
+        except Subject.DoesNotExist:
+            pass
+
+    if subject_instance is None:
+        subject_instance = Subject.objects.create(
+            subject=subject,
+            subject_scheme=subject_node.get('subjectScheme', ''),
+            scheme_uri=scheme_uri,
+            value_uri=value_uri,
+            classification_code=subject_node.get('classificationCode', ''),
+
+        )
+        logger.info('Subject="%s" created', subject_instance)
+
+    return subject_instance
 
 
 def import_geo_location(geo_location_node):
