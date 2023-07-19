@@ -48,20 +48,21 @@ jobs:
     - name: Run pytest
       run: |
         pytest --cov=django_datacite
-        coveralls --service=github
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
-        COVERALLS_PARALLEL: true
+
+    - name: Run coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: run-${{ join(matrix.*, '-') }}
+        parallel: true
 
   coveralls:
     needs: pytest
     runs-on: ubuntu-latest
-    container: python:3-slim
     steps:
     - name: Run coveralls finish
-      run: |
-        pip install coveralls
-        coveralls --service=github --finish
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
+        carryforward: "run-3.7,run-3.11"
