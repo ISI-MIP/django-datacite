@@ -178,16 +178,16 @@ class ImportForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        if cleaned_data['file'] and cleaned_data['url']:
+        if cleaned_data.get('file') and cleaned_data.get('url'):
             raise ValidationError(_('Please provide a file OR a URL.'))
 
-        elif cleaned_data['file']:
+        elif cleaned_data.get('file'):
             try:
                 cleaned_data['data'] = json.load(cleaned_data['file'])
             except json.JSONDecodeError:
                 raise ValidationError(_('Please provide a valid JSON.'))
 
-        elif cleaned_data['url']:
+        elif cleaned_data.get('url'):
             response = requests.get(cleaned_data['url'])
             response.raise_for_status()
 
@@ -334,19 +334,19 @@ class ResourceAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-            path('<int:pk>/export/<str:format>/', self.admin_site.admin_view(self.datecite_resource_export),
-                 name='datecite_resource_export'),
-            path('import/', self.admin_site.admin_view(self.datecite_resource_import),
-                 name='datecite_resource_import'),
-            path('<int:pk>/import/', self.admin_site.admin_view(self.datecite_resource_import),
-                 name='datecite_resource_import'),
-            path('<int:pk>/copy/', self.admin_site.admin_view(self.datecite_resource_copy),
-                 name='datecite_resource_copy'),
-            path('<int:pk>/validate/', self.admin_site.admin_view(self.datecite_resource_validate),
-                 name='datecite_resource_validate'),
+            path('<int:pk>/export/<str:format>/', self.admin_site.admin_view(self.datacite_resource_export),
+                 name='datacite_resource_export'),
+            path('import/', self.admin_site.admin_view(self.datacite_resource_import),
+                 name='datacite_resource_import'),
+            path('<int:pk>/import/', self.admin_site.admin_view(self.datacite_resource_import),
+                 name='datacite_resource_import'),
+            path('<int:pk>/copy/', self.admin_site.admin_view(self.datacite_resource_copy),
+                 name='datacite_resource_copy'),
+            path('<int:pk>/validate/', self.admin_site.admin_view(self.datacite_resource_validate),
+                 name='datacite_resource_validate'),
             ] + super().get_urls()
 
-    def datecite_resource_export(self, request, pk=None, format=None):
+    def datacite_resource_export(self, request, pk=None, format=None):
         resource = get_object_or_404(Resource, id=pk)
 
         if format == 'json':
@@ -366,7 +366,7 @@ class ResourceAdmin(admin.ModelAdmin):
 
         return response
 
-    def datecite_resource_import(self, request, pk=None):
+    def datacite_resource_import(self, request, pk=None):
         if pk is not None:
             resource = get_object_or_404(Resource, id=pk)
         else:
@@ -389,7 +389,7 @@ class ResourceAdmin(admin.ModelAdmin):
             'form': form
         })
 
-    def datecite_resource_copy(self, request, pk=None):
+    def datacite_resource_copy(self, request, pk=None):
         resource = get_object_or_404(Resource, id=pk)
 
         if request.method == 'POST':
@@ -402,11 +402,11 @@ class ResourceAdmin(admin.ModelAdmin):
 
         return render(request, 'admin/datacite/resource/copy.html')
 
-    def datecite_resource_validate(self, request, pk=None):
+    def datacite_resource_validate(self, request, pk=None):
         resource = get_object_or_404(Resource, id=pk)
         return render(request, 'admin/datacite/resource/validate.html', {
             'resource': resource,
-            'errors': resource.validate_json()
+            'errors': resource.validate()
         })
 
 
