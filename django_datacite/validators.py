@@ -2,10 +2,12 @@ from django.core.exceptions import ValidationError
 
 import jsonschema
 
+from .exports import export_resource
+
 
 def validate_resource(resource):
     from datacite.schema43 import validator
-    return list(validator.iter_errors(resource.serialize()))
+    return list(validator.iter_errors(export_resource(resource)))
 
 
 def validate_polygon_points(value):
