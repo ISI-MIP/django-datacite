@@ -1,5 +1,1643 @@
 [
   {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2023-07-19T13:45:30.804Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "2",
+      "object_repr": "(URL) https://example.com/resource/",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2023-07-19T13:45:49.668Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "3",
+      "object_repr": "(DOI) https://doi.org/10.12345/55555",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2023-07-19T13:47:13.089Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "1",
+      "object_repr": "[[0, 0], [0, 1], [1, 1], [1, 0]]",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"geo location polygon\", \"object\": \"[[0, 0], [0, 1], [1, 1], [1, 0]]\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2023-07-19T13:47:48.699Z",
+      "user": 1,
+      "content_type": 12,
+      "object_id": "5",
+      "object_repr": "Funny Funder",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"name identifier\", \"object\": \"(ROR) QuoVes3\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2023-07-19T13:48:11.050Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"alternate identifier\", \"object\": \"(URL) https://example.com/resource/ []\"}}, {\"added\": {\"name\": \"related identifier\", \"object\": \"(DOI) https://doi.org/10.12345/55555 []\"}}, {\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}, {\"added\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (1)\"}}, {\"added\": {\"name\": \"funding reference\", \"object\": \"Funny Funder\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2023-07-19T13:48:40.014Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "4",
+      "object_repr": "(DOI) https://doi.org/10.12345/99999",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2023-07-19T13:48:59.710Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "2",
+      "object_repr": "(DOI) https://doi.org/10.12345/99999",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"title\", \"object\": \"Related item\"}}, {\"added\": {\"name\": \"creator\", \"object\": \"Tanja Test\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2023-07-19T13:49:13.259Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}, {\"added\": {\"name\": \"related item\", \"object\": \"(References) (DOI) https://doi.org/10.12345/99999\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2023-07-19T13:49:27.195Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "2",
+      "object_repr": "(DOI) https://doi.org/10.12345/99999",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Publication year\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2023-07-19T13:49:45.078Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "2",
+      "object_repr": "(DOI) https://doi.org/10.12345/99999",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Publisher\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2023-07-19T13:50:05.096Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2023-07-19T13:52:42.134Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "2",
+      "object_repr": "10.0, 10.0",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"geo location point\", \"object\": \"10.0, 10.0\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2023-07-19T13:52:51.427Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "2",
+      "object_repr": "Location 2",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2023-07-19T13:52:57.741Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "1",
+      "object_repr": "Location 1",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+      "action_time": "2023-07-19T13:53:32.107Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "3",
+      "object_repr": "Location 3",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"geo location box\", \"object\": \"-180.0, 180.0, -90.0, -23.0\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+      "action_time": "2023-07-19T13:53:34.481Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}, {\"added\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (2)\"}}, {\"added\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (3)\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+      "action_time": "2023-07-19T14:34:08.752Z",
+      "user": 1,
+      "content_type": 16,
+      "object_id": "2",
+      "object_repr": "Test2",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+      "action_time": "2023-07-19T14:35:39.896Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"resource-subject relationship\", \"object\": \"Resource_subjects object (2)\"}}, {\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+      "action_time": "2023-07-19T14:36:14.260Z",
+      "user": 1,
+      "content_type": 16,
+      "object_id": "1",
+      "object_repr": "Test",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+      "action_time": "2023-07-19T14:36:23.155Z",
+      "user": 1,
+      "content_type": 16,
+      "object_id": "2",
+      "object_repr": "Test2",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+      "action_time": "2023-07-19T14:38:28.205Z",
+      "user": 1,
+      "content_type": 12,
+      "object_id": "6",
+      "object_repr": "Thomas Test",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+      "action_time": "2023-07-19T14:38:37.610Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"creator\", \"object\": \"Thomas Test\"}}, {\"changed\": {\"name\": \"creator\", \"object\": \"Tanja Test\", \"fields\": [\"Order\"]}}, {\"changed\": {\"name\": \"creator\", \"object\": \"Tom Test\", \"fields\": [\"Order\"]}}, {\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+      "action_time": "2023-07-19T14:39:50.991Z",
+      "user": 1,
+      "content_type": 12,
+      "object_id": "6",
+      "object_repr": "Thomas Test",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+      "action_time": "2023-07-19T15:31:46.578Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "1",
+      "object_repr": "[[0, 0], [0, 1], [1, 1], [1, 0]]",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+      "action_time": "2023-07-19T15:31:53.008Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "2",
+      "object_repr": "10.0, 10.0",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+      "action_time": "2023-07-19T15:31:57.199Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "3",
+      "object_repr": "-180.0, 180.0, -90.0, -23.0",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+      "action_time": "2023-07-19T15:34:12.000Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "4",
+      "object_repr": "global",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+      "action_time": "2023-07-19T15:34:18.781Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "5",
+      "object_repr": "GeoLocation #5",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+      "action_time": "2023-07-19T15:34:26.128Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}, {\"added\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (4)\"}}, {\"added\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (5)\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+      "action_time": "2023-07-19T15:36:08.442Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}, {\"deleted\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (None)\"}}, {\"deleted\": {\"name\": \"resource-geolocation relationship\", \"object\": \"Resource_geo_locations object (None)\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+      "action_time": "2023-07-19T15:37:04.402Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "1",
+      "object_repr": "Location 1",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+      "action_time": "2023-07-19T15:37:09.708Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "2",
+      "object_repr": "Location 2",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+      "action_time": "2023-07-19T15:37:14.388Z",
+      "user": 1,
+      "content_type": 21,
+      "object_id": "3",
+      "object_repr": "Location 3",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Geo location place\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+      "action_time": "2023-07-19T15:37:16.346Z",
+      "user": 1,
+      "content_type": 14,
+      "object_id": "1",
+      "object_repr": "(DOI) https://doi.org/10.12345/12345",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"rights\", \"object\": \"CC0-1.0\", \"fields\": []}}]"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 4,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 4,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 4,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 4,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 5,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 5,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 5,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 5,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 6,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 6,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 6,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 6,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add site",
+      "content_type": 7,
+      "codename": "add_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change site",
+      "content_type": 7,
+      "codename": "change_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete site",
+      "content_type": 7,
+      "codename": "delete_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view site",
+      "content_type": 7,
+      "codename": "view_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add alternate identifier",
+      "content_type": 8,
+      "codename": "add_alternateidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change alternate identifier",
+      "content_type": 8,
+      "codename": "change_alternateidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete alternate identifier",
+      "content_type": 8,
+      "codename": "delete_alternateidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view alternate identifier",
+      "content_type": 8,
+      "codename": "view_alternateidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add contributor",
+      "content_type": 9,
+      "codename": "add_contributor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change contributor",
+      "content_type": 9,
+      "codename": "change_contributor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete contributor",
+      "content_type": 9,
+      "codename": "delete_contributor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view contributor",
+      "content_type": 9,
+      "codename": "view_contributor"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add creator",
+      "content_type": 10,
+      "codename": "add_creator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change creator",
+      "content_type": 10,
+      "codename": "change_creator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete creator",
+      "content_type": 10,
+      "codename": "delete_creator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view creator",
+      "content_type": 10,
+      "codename": "view_creator"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add identifier",
+      "content_type": 11,
+      "codename": "add_identifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change identifier",
+      "content_type": 11,
+      "codename": "change_identifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete identifier",
+      "content_type": 11,
+      "codename": "delete_identifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view identifier",
+      "content_type": 11,
+      "codename": "view_identifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add name",
+      "content_type": 12,
+      "codename": "add_name"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change name",
+      "content_type": 12,
+      "codename": "change_name"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete name",
+      "content_type": 12,
+      "codename": "delete_name"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view name",
+      "content_type": 12,
+      "codename": "view_name"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add related identifier",
+      "content_type": 13,
+      "codename": "add_relatedidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change related identifier",
+      "content_type": 13,
+      "codename": "change_relatedidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete related identifier",
+      "content_type": 13,
+      "codename": "delete_relatedidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view related identifier",
+      "content_type": 13,
+      "codename": "view_relatedidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add resource",
+      "content_type": 14,
+      "codename": "add_resource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change resource",
+      "content_type": 14,
+      "codename": "change_resource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete resource",
+      "content_type": 14,
+      "codename": "delete_resource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view resource",
+      "content_type": 14,
+      "codename": "view_resource"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add title",
+      "content_type": 15,
+      "codename": "add_title"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change title",
+      "content_type": 15,
+      "codename": "change_title"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete title",
+      "content_type": 15,
+      "codename": "delete_title"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view title",
+      "content_type": 15,
+      "codename": "view_title"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add subject",
+      "content_type": 16,
+      "codename": "add_subject"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change subject",
+      "content_type": 16,
+      "codename": "change_subject"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete subject",
+      "content_type": 16,
+      "codename": "delete_subject"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+      "name": "Can view subject",
+      "content_type": 16,
+      "codename": "view_subject"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+      "name": "Can add rights",
+      "content_type": 17,
+      "codename": "add_rights"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+      "name": "Can change rights",
+      "content_type": 17,
+      "codename": "change_rights"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+      "name": "Can delete rights",
+      "content_type": 17,
+      "codename": "delete_rights"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+      "name": "Can view rights",
+      "content_type": 17,
+      "codename": "view_rights"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+      "name": "Can add name identifier",
+      "content_type": 18,
+      "codename": "add_nameidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+      "name": "Can change name identifier",
+      "content_type": 18,
+      "codename": "change_nameidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+      "name": "Can delete name identifier",
+      "content_type": 18,
+      "codename": "delete_nameidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+      "name": "Can view name identifier",
+      "content_type": 18,
+      "codename": "view_nameidentifier"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+      "name": "Can add description",
+      "content_type": 19,
+      "codename": "add_description"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+      "name": "Can change description",
+      "content_type": 19,
+      "codename": "change_description"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+      "name": "Can delete description",
+      "content_type": 19,
+      "codename": "delete_description"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+      "name": "Can view description",
+      "content_type": 19,
+      "codename": "view_description"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+      "name": "Can add date",
+      "content_type": 20,
+      "codename": "add_date"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+      "name": "Can change date",
+      "content_type": 20,
+      "codename": "change_date"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+      "name": "Can delete date",
+      "content_type": 20,
+      "codename": "delete_date"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+      "name": "Can view date",
+      "content_type": 20,
+      "codename": "view_date"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+      "name": "Can add geo location",
+      "content_type": 21,
+      "codename": "add_geolocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+      "name": "Can change geo location",
+      "content_type": 21,
+      "codename": "change_geolocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+      "name": "Can delete geo location",
+      "content_type": 21,
+      "codename": "delete_geolocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+      "name": "Can view geo location",
+      "content_type": 21,
+      "codename": "view_geolocation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+      "name": "Can add geo location polygon",
+      "content_type": 22,
+      "codename": "add_geolocationpolygon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+      "name": "Can change geo location polygon",
+      "content_type": 22,
+      "codename": "change_geolocationpolygon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+      "name": "Can delete geo location polygon",
+      "content_type": 22,
+      "codename": "delete_geolocationpolygon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+      "name": "Can view geo location polygon",
+      "content_type": 22,
+      "codename": "view_geolocationpolygon"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+      "name": "Can add geo location point",
+      "content_type": 23,
+      "codename": "add_geolocationpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+      "name": "Can change geo location point",
+      "content_type": 23,
+      "codename": "change_geolocationpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+      "name": "Can delete geo location point",
+      "content_type": 23,
+      "codename": "delete_geolocationpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+      "name": "Can view geo location point",
+      "content_type": 23,
+      "codename": "view_geolocationpoint"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+      "name": "Can add geo location box",
+      "content_type": 24,
+      "codename": "add_geolocationbox"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+      "name": "Can change geo location box",
+      "content_type": 24,
+      "codename": "change_geolocationbox"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+      "name": "Can delete geo location box",
+      "content_type": 24,
+      "codename": "delete_geolocationbox"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+      "name": "Can view geo location box",
+      "content_type": 24,
+      "codename": "view_geolocationbox"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 97,
+    "fields": {
+      "name": "Can add funding reference",
+      "content_type": 25,
+      "codename": "add_fundingreference"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 98,
+    "fields": {
+      "name": "Can change funding reference",
+      "content_type": 25,
+      "codename": "change_fundingreference"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 99,
+    "fields": {
+      "name": "Can delete funding reference",
+      "content_type": 25,
+      "codename": "delete_fundingreference"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 100,
+    "fields": {
+      "name": "Can view funding reference",
+      "content_type": 25,
+      "codename": "view_fundingreference"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 101,
+    "fields": {
+      "name": "Can add related item",
+      "content_type": 26,
+      "codename": "add_relateditem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 102,
+    "fields": {
+      "name": "Can change related item",
+      "content_type": 26,
+      "codename": "change_relateditem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 103,
+    "fields": {
+      "name": "Can delete related item",
+      "content_type": 26,
+      "codename": "delete_relateditem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 104,
+    "fields": {
+      "name": "Can view related item",
+      "content_type": 26,
+      "codename": "view_relateditem"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$ECpFpoqfEXMmJo3YEdNxmO$w3VrWKG3PgAP3oQ53Zg4nK8Qc2VuxVtoImCcN+6iITE=",
+      "last_login": "2023-07-19T13:45:01.015Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-07-12T15:20:11.261Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$WUg0vmdRdmKd7GOPIpSGID$Q1zZ7pZE2Mg6er1YBGXg5Uv+9REip0iN7ysTTmfxPOI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "user",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-07-12T15:20:25Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "auth",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "sites",
+      "model": "site"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "datacite",
+      "model": "alternateidentifier"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "datacite",
+      "model": "contributor"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "datacite",
+      "model": "creator"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "datacite",
+      "model": "identifier"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "datacite",
+      "model": "name"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "datacite",
+      "model": "relatedidentifier"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "datacite",
+      "model": "resource"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "datacite",
+      "model": "title"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+      "app_label": "datacite",
+      "model": "subject"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+      "app_label": "datacite",
+      "model": "rights"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "datacite",
+      "model": "nameidentifier"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+      "app_label": "datacite",
+      "model": "description"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "datacite",
+      "model": "date"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+      "app_label": "datacite",
+      "model": "geolocation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+      "app_label": "datacite",
+      "model": "geolocationpolygon"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+      "app_label": "datacite",
+      "model": "geolocationpoint"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": {
+      "app_label": "datacite",
+      "model": "geolocationbox"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": {
+      "app_label": "datacite",
+      "model": "fundingreference"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": {
+      "app_label": "datacite",
+      "model": "relateditem"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "8zp9wmg22xc05089kgdwkfqayc0fii47",
+    "fields": {
+      "session_data": ".eJxVjMsOwiAURP-FtSHA5VFcuvcbCHAvUjU0Ke3K-O9K0oXuJnPOzIuFuG817J3WMCM7M8lOv12K-UFtALzHdlt4Xtq2zokPhR-08-uC9Lwc7t9Bjb1-1-C1i8JjHoGs0UlZYRyCRI9SKyNKBCyEAmginzTIorSfslIIzhb2_gDGCTdO:1qM7UD:mJUqHGBFhMtySpjsOJhGpZw8iOqgwPxiUOdbL0ZUws8",
+      "expire_date": "2023-08-02T13:45:01.016Z"
+    }
+  },
+  {
+    "model": "sites.site",
+    "pk": 1,
+    "fields": {
+      "domain": "localhost:8000",
+      "name": "example.com"
+    }
+  },
+  {
     "model": "datacite.resource",
     "pk": 1,
     "fields": {
@@ -16,6 +1654,34 @@
       "cite_publisher": true,
       "cite_resource_type_general": true,
       "cite_version": true,
+      "subjects": [
+        1,
+        2
+      ],
+      "geo_locations": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "datacite.resource",
+    "pk": 2,
+    "fields": {
+      "public": true,
+      "identifier": 4,
+      "publisher": "Test Repository",
+      "publication_year": 2023,
+      "resource_type": "",
+      "resource_type_general": "Dataset",
+      "language": "en",
+      "size": "",
+      "format": "",
+      "version": "",
+      "cite_publisher": true,
+      "cite_resource_type_general": true,
+      "cite_version": true,
       "subjects": [],
       "geo_locations": []
     }
@@ -26,7 +1692,34 @@
     "fields": {
       "identifier": "10.12345/12345",
       "identifier_type": "DOI",
-      "citation": "Test, Tanja; Test, Tom (2023): Test Dataset. Version 1.0. Test Repository. (Dataset). https://doi.org/10.12345/12345."
+      "citation": "Test, Tanja; Test, Tom; Test, Thomas (2023): Test Dataset. Version 1.0. Test Repository. (Dataset). https://doi.org/10.12345/12345."
+    }
+  },
+  {
+    "model": "datacite.identifier",
+    "pk": 2,
+    "fields": {
+      "identifier": "https://example.com/resource/",
+      "identifier_type": "URL",
+      "citation": ""
+    }
+  },
+  {
+    "model": "datacite.identifier",
+    "pk": 3,
+    "fields": {
+      "identifier": "10.12345/55555",
+      "identifier_type": "DOI",
+      "citation": ""
+    }
+  },
+  {
+    "model": "datacite.identifier",
+    "pk": 4,
+    "fields": {
+      "identifier": "10.12345/99999",
+      "identifier_type": "DOI",
+      "citation": "Test, Tanja (2023): Related item. Version . Test Repository. (Dataset). https://doi.org/10.12345/99999."
     }
   },
   {
@@ -80,6 +1773,28 @@
     }
   },
   {
+    "model": "datacite.name",
+    "pk": 5,
+    "fields": {
+      "name": "Funny Funder",
+      "name_type": "Organizational",
+      "given_name": "",
+      "family_name": "",
+      "affiliations": []
+    }
+  },
+  {
+    "model": "datacite.name",
+    "pk": 6,
+    "fields": {
+      "name": "Thomas Test",
+      "name_type": "Personal",
+      "given_name": "Thomas",
+      "family_name": "Test",
+      "affiliations": []
+    }
+  },
+  {
     "model": "datacite.nameidentifier",
     "pk": 1,
     "fields": {
@@ -116,12 +1831,21 @@
     }
   },
   {
+    "model": "datacite.nameidentifier",
+    "pk": 5,
+    "fields": {
+      "name": 5,
+      "name_identifier": "QuoVes3",
+      "name_identifier_scheme": "ROR"
+    }
+  },
+  {
     "model": "datacite.creator",
     "pk": 1,
     "fields": {
       "resource": 1,
       "name": 2,
-      "order": 0
+      "order": 2
     }
   },
   {
@@ -130,7 +1854,25 @@
     "fields": {
       "resource": 1,
       "name": 3,
+      "order": 1
+    }
+  },
+  {
+    "model": "datacite.creator",
+    "pk": 3,
+    "fields": {
+      "resource": 2,
+      "name": 3,
       "order": 0
+    }
+  },
+  {
+    "model": "datacite.creator",
+    "pk": 4,
+    "fields": {
+      "resource": 1,
+      "name": 6,
+      "order": 3
     }
   },
   {
@@ -153,12 +1895,43 @@
     }
   },
   {
+    "model": "datacite.title",
+    "pk": 2,
+    "fields": {
+      "resource": 2,
+      "title": "Related item",
+      "title_type": ""
+    }
+  },
+  {
     "model": "datacite.description",
     "pk": 1,
     "fields": {
       "resource": 1,
       "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet.",
       "description_type": "Abstract"
+    }
+  },
+  {
+    "model": "datacite.subject",
+    "pk": 1,
+    "fields": {
+      "subject": "Test",
+      "subject_scheme": "NASA/GCMD Earth Science Keywords",
+      "scheme_uri": "http://gcmdservices.gsfc.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+      "value_uri": "https://gcmd.earthdata.nasa.gov/kms/concept/test",
+      "classification_code": ""
+    }
+  },
+  {
+    "model": "datacite.subject",
+    "pk": 2,
+    "fields": {
+      "subject": "Test2",
+      "subject_scheme": "NASA/GCMD Earth Science Keywords",
+      "scheme_uri": "http://gcmdservices.gsfc.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+      "value_uri": "",
+      "classification_code": ""
     }
   },
   {
@@ -182,11 +1955,140 @@
     }
   },
   {
+    "model": "datacite.alternateidentifier",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "identifier": 2,
+      "order": 0
+    }
+  },
+  {
+    "model": "datacite.relatedidentifier",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "identifier": 3,
+      "order": 0,
+      "relation_type": "References",
+      "resource_type_general": "Dataset"
+    }
+  },
+  {
     "model": "datacite.rights",
     "pk": 1,
     "fields": {
       "resource": 1,
       "rights_identifier": "CC0-1.0"
+    }
+  },
+  {
+    "model": "datacite.geolocation",
+    "pk": 1,
+    "fields": {
+      "geo_location_place": "Location 1"
+    }
+  },
+  {
+    "model": "datacite.geolocation",
+    "pk": 2,
+    "fields": {
+      "geo_location_place": "Location 2"
+    }
+  },
+  {
+    "model": "datacite.geolocation",
+    "pk": 3,
+    "fields": {
+      "geo_location_place": "Location 3"
+    }
+  },
+  {
+    "model": "datacite.geolocation",
+    "pk": 4,
+    "fields": {
+      "geo_location_place": "global"
+    }
+  },
+  {
+    "model": "datacite.geolocation",
+    "pk": 5,
+    "fields": {
+      "geo_location_place": ""
+    }
+  },
+  {
+    "model": "datacite.geolocationpoint",
+    "pk": 1,
+    "fields": {
+      "geo_location": 2,
+      "point_longitude": 10.0,
+      "point_latitude": 10.0
+    }
+  },
+  {
+    "model": "datacite.geolocationbox",
+    "pk": 1,
+    "fields": {
+      "geo_location": 3,
+      "west_bound_longitude": -180.0,
+      "east_bound_longitude": 180.0,
+      "south_bound_latitude": -90.0,
+      "north_bound_latitude": -23.0
+    }
+  },
+  {
+    "model": "datacite.geolocationpolygon",
+    "pk": 1,
+    "fields": {
+      "geo_location": 1,
+      "polygon_points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "in_point_longitude": 0.5,
+      "in_point_latitude": 0.5
+    }
+  },
+  {
+    "model": "datacite.fundingreference",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "funder": 5,
+      "award_number": "12345",
+      "award_uri": "https://example.com/12345",
+      "award_title": "Test award"
+    }
+  },
+  {
+    "model": "datacite.relateditem",
+    "pk": 1,
+    "fields": {
+      "resource": 1,
+      "item": 2,
+      "relation_type": "References",
+      "volume": "1",
+      "issue": "1",
+      "number": "1",
+      "number_type": "Article",
+      "first_page": "10",
+      "last_page": "20",
+      "edition": ""
     }
   }
 ]

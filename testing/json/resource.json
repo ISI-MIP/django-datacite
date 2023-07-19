@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "identifiers": [
+    {
+      "identifier": "10.12345/12345",
+      "identifierType": "DOI"
+    }
+  ],
+  "creators": [
+    {
+      "name": "Tanja Test",
+      "nameType": "Personal",
+      "givenName": "Tanja",
+      "familyName": "Test",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-5678-1234-0000",
+          "nameIdentifierScheme": "ORCID",
+          "schemeURI": "https://orcid.org"
+        }
+      ],
+      "affiliations": [
+        {
+          "affiliation": "Institute of Applied Testing",
+          "affiliationIdentifier": "Eid1thua9",
+          "affiliationIdentifierScheme": "ROR"
+        }
+      ]
+    },
+    {
+      "name": "Tom Test",
+      "nameType": "Personal",
+      "givenName": "Tom",
+      "familyName": "Test",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-1234-5678-0000",
+          "nameIdentifierScheme": "ORCID",
+          "schemeURI": "https://orcid.org"
+        }
+      ],
+      "affiliations": [
+        {
+          "affiliation": "Institute of Applied Testing",
+          "affiliationIdentifier": "Eid1thua9",
+          "affiliationIdentifierScheme": "ROR"
+        }
+      ]
+    },
+    {
+      "name": "Thomas Test",
+      "nameType": "Personal",
+      "givenName": "Thomas",
+      "familyName": "Test"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Test Dataset"
+    }
+  ],
+  "publisher": "Test Repository",
+  "publicationYear": "2023",
+  "types": {
+    "resourceType": "Dataset",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "subjects": [
+    {
+      "subject": "Test",
+      "subjectScheme": "NASA/GCMD Earth Science Keywords",
+      "schemeURI": "http://gcmdservices.gsfc.nasa.gov/kms/concepts/concept_scheme/sciencekeywords",
+      "valueURI": "https://gcmd.earthdata.nasa.gov/kms/concept/test"
+    },
+    {
+      "subject": "Test2",
+      "subjectScheme": "NASA/GCMD Earth Science Keywords",
+      "schemeURI": "http://gcmdservices.gsfc.nasa.gov/kms/concepts/concept_scheme/sciencekeywords"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Conny Contributor",
+      "nameType": "Personal",
+      "contributorType": "ContactPerson",
+      "givenName": "Conny",
+      "familyName": "Contributor",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-1234-8765-0000",
+          "nameIdentifierScheme": "ORCID",
+          "schemeURI": "https://orcid.org"
+        }
+      ],
+      "affiliations": [
+        {
+          "affiliation": "Institute of Applied Testing",
+          "affiliationIdentifier": "Eid1thua9",
+          "affiliationIdentifierScheme": "ROR"
+        }
+      ]
+    }
+  ],
+  "dates": [
+    {
+      "date": "2023-07-02",
+      "dateType": "Accepted"
+    },
+    {
+      "date": "2023-07-01",
+      "dateType": "Issued"
+    }
+  ],
+  "language": "en",
+  "alternateIdentifiers": [
+    {
+      "alternateIdentifier": "https://example.com/resource/",
+      "alternateIdentifierType": "URL"
+    }
+  ],
+  "relatedIdentifiers": [
+    {
+      "relationType": "References",
+      "relatedIdentifier": "https://doi.org/10.12345/55555",
+      "relatedIdentifierType": "DOI",
+      "citation": ""
+    }
+  ],
+  "size": "1000",
+  "format": "NetCDF",
+  "version": "1.0",
+  "rightsList": [
+    {
+      "rights": "CC0 1.0 Universal Public Domain Dedication",
+      "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rightsIdentifier": "CC0-1.0",
+      "rightsIdentifierScheme": "SPDX",
+      "schemeURI": "https://spdx.org/licenses/"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "geoLocations": [
+    {
+      "geoLocationPlace": "Location 1",
+      "geoLocationPolygons": [
+        {
+          "polygonPoints": [
+            {
+              "pointLongitude": 0,
+              "pointLatitude": 0
+            },
+            {
+              "pointLongitude": 0,
+              "pointLatitude": 1
+            },
+            {
+              "pointLongitude": 1,
+              "pointLatitude": 1
+            },
+            {
+              "pointLongitude": 1,
+              "pointLatitude": 0
+            }
+          ],
+          "inPolygonPoint": {
+            "pointLongitude": 0.5,
+            "pointLatitude": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "geoLocationPlace": "Location 2",
+      "geoLocationPoint": {
+        "pointLongitude": 10.0,
+        "pointLatitude": 10.0
+      }
+    },
+    {
+      "geoLocationPlace": "Location 3",
+      "geoLocationBox": {
+        "westBoundLongitude": -180.0,
+        "eastBoundLongitude": 180.0,
+        "southBoundLatitude": -90.0,
+        "northBoundLatitude": -23.0
+      }
+    }
+  ],
+  "fundingReferences": [
+    {
+      "funderName": "Funny Funder",
+      "funderIdentifier": "QuoVes3",
+      "funderIdentifierType": "ROR",
+      "schemeURI": "https://ror.org",
+      "awardNumber": "12345",
+      "awardURI": "https://example.com/12345",
+      "awardTitle": "Test award"
+    }
+  ],
+  "relatedItems": [
+    {
+      "relatedItemType": "Dataset",
+      "relationType": "References",
+      "relatedItemIdentifier": "10.12345/99999",
+      "relatedItemIdentifierType": "DOI",
+      "creators": [
+        {
+          "name": "Tanja Test",
+          "nameType": "Personal",
+          "givenName": "Tanja",
+          "familyName": "Test",
+          "nameIdentifiers": [
+            {
+              "nameIdentifier": "0000-5678-1234-0000",
+              "nameIdentifierScheme": "ORCID",
+              "schemeURI": "https://orcid.org"
+            }
+          ],
+          "affiliations": [
+            {
+              "affiliation": "Institute of Applied Testing",
+              "affiliationIdentifier": "Eid1thua9",
+              "affiliationIdentifierScheme": "ROR"
+            }
+          ]
+        }
+      ],
+      "titles": [
+        {
+          "title": "Related item"
+        }
+      ],
+      "publicationYear": "2023",
+      "volume": "1",
+      "issue": "1",
+      "number": "1",
+      "numberType": "Article",
+      "firstPage": "10",
+      "lastPage": "20",
+      "publisher": "Test Repository"
+    }
+  ]
+}
