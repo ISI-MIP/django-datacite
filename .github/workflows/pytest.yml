@@ -36,9 +36,8 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip setuptools
         python3 -m pip install psycopg2-binary
-        python3 -m pip install coveralls
         python3 -m pip install -r requirements/pytest.txt
-        python3 -m pip install .
+        python3 -m pip install -e .
 
     - name: Setup environment file
       run: |
@@ -47,13 +46,13 @@ jobs:
 
     - name: Run pytest
       run: |
-        pytest --cov=django_datacite
+        pytest --cov
 
     - name: Run coveralls
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        flag-name: run-${{ join(matrix.*, '-') }}
+        flag-name: ${{ matrix.python-version }}
         parallel: true
 
   coveralls:
@@ -65,4 +64,4 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
-        carryforward: "run-3.7,run-3.11"
+        carryforward: "3.7,3.11"
