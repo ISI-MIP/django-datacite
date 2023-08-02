@@ -13,4 +13,4 @@ This app provides a set of [models](django_datacite/models.py), [admin classes](
 
 For a reference integration into a Django project see: https://github.com/ISI-MIP/isimip-doi.
 
-**While it should already cover DataCite 4.3 completely, it is still under development should only be used with care.**
+**Although it should cover DataCite 4.3 completely, it is still quite fresh and should be used with care.**
