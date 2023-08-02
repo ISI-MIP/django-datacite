@@ -1,0 +1,53 @@
+[project]
+name = "django-datacite"
+authors = [
+    { name = "Jochen Klar", email = "jochen.klar@pik-potsdam.de" },
+]
+maintainers = [
+    { name = "Jochen Klar", email = "jochen.klar@pik-potsdam.de" },
+]
+description = """
+A Django app to properly model the DataCite Metadata Schema in a relational database,
+with full integration into the Django admin interface."""
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+classifiers = [
+    'Operating System :: OS Independent',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+dependencies = [
+    "datacite~=1.1.2",
+    "Django>=3.2.0",
+    "requests>=2.25.0"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+pytest = [
+    "dj_database_url~=2.0.0",
+    "pytest~=7.4.0",
+    "pytest-cov~=4.1.0",
+    "pytest-django~=4.5.2",
+    "pytest-dotenv~=0.5.2",
+    "requests-mock~=1.11.0"
+]
+
+[project.urls]
+Repository = "https://github.com/ISI-MIP/django-datacite"
+
+[tool.setuptools]
+packages = ["django_datacite"]
+
+[tool.setuptools.dynamic]
+version = { attr = "django_datacite.__version__" }
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+testpaths = ["django_datacite"]
+python_files = "test_*.py"
+pythonpath = "testing/"

@@ -1,4 +1,0 @@
-graft django_datacite
-
-global-exclude __pycache__
-global-exclude *.py[co]
