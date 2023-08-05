@@ -3,7 +3,7 @@ django-datacite
 
 [![Latest Release](https://img.shields.io/pypi/v/django-datacite)](https://pypi.org/project/django-datacite/)
 [![Python Version](https://img.shields.io/badge/python->=3.8-blue)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-green)](https://github.com/ISI-MIP/django-datacite/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/ISI-MIP/django-datacite/blob/master/LICENSE)
 [![pytest Workflow Status](https://github.com/ISI-MIP/django-datacite/actions/workflows/pytest.yml/badge.svg)](https://github.com/ISI-MIP/django-datacite/actions/workflows/pytest.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ISI-MIP/django-datacite/badge.svg?branch=master)](https://coveralls.io/github/ISI-MIP/django-datacite?branch=master)
 
