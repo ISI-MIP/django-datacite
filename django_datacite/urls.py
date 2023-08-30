@@ -1,6 +1,6 @@
 from django.urls import re_path
 
-from django_datacite.views import resource, resource_json, resource_xml, resource_bibtex
+from django_datacite.views import resource, resource_bibtex, resource_json, resource_xml
 
 app_name = 'django_datacite'
 

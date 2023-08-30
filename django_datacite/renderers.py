@@ -3,7 +3,7 @@ from xml.dom.minidom import parseString
 from xml.sax.saxutils import XMLGenerator
 
 
-class XMLRenderer(object):
+class XMLRenderer:
 
     def __init__(self):
         self.stream = io.StringIO()
@@ -19,7 +19,7 @@ class XMLRenderer(object):
     def render_node(self, tag, attrs, value):
         if value is not None:
             # remove None values from attrs
-            attrs = dict((k, v) for k, v in attrs.items() if v is not None)
+            attrs = {k: v for k, v in attrs.items() if v is not None}
 
             self.xml.startElement(tag, attrs)
             self.xml.characters(str(value))

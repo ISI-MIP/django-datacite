@@ -32,7 +32,7 @@ def resource_json(request, identifier=None):
     if resource:
         resource_json = json.dumps(export_resource(resource), indent=2)
         response = HttpResponse(resource_json, content_type="application/json")
-        response['Content-Disposition'] = 'filename="{}.json"'.format(resource.identifier)
+        response['Content-Disposition'] = f'filename="{resource.identifier}.json"'
         return response
     else:
         raise Http404
@@ -43,7 +43,7 @@ def resource_xml(request, identifier=None):
     if resource:
         resource_xml = XMLRenderer().render(export_resource(resource))
         response = HttpResponse(resource_xml, content_type="application/xml")
-        response['Content-Disposition'] = 'filename="{}.xml"'.format(resource.identifier)
+        response['Content-Disposition'] = f'filename="{resource.identifier}.xml"'
         return response
     else:
         raise Http404
@@ -54,7 +54,7 @@ def resource_bibtex(request, identifier=None):
     if resource:
         resource_bibtex = render_bibtex(resource)
         response = HttpResponse(resource_bibtex, content_type='application/x-bibtex')
-        response['Content-Disposition'] = 'filename="{}.bib"'.format(resource.identifier)
+        response['Content-Disposition'] = f'filename="{resource.identifier}.bib"'
         return response
     else:
         raise Http404

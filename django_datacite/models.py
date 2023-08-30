@@ -200,8 +200,8 @@ class Resource(models.Model):
     def get_absolute_url(self):
         try:
             return reverse('django_datacite:resource', args=[self.identifier.identifier])
-        except (NoReverseMatch, AttributeError):
-            raise Http404
+        except (NoReverseMatch, AttributeError) as e:
+            raise Http404 from e
 
     @staticmethod
     def get_default_public():
@@ -718,7 +718,8 @@ class GeoLocationBox(models.Model):
     )
 
     def __str__(self):
-        return '{west_bound_longitude}, {east_bound_longitude}, {south_bound_latitude}, {north_bound_latitude}'.format(**vars(self))
+        return '{west_bound_longitude}, {east_bound_longitude}, ' \
+               '{south_bound_latitude}, {north_bound_latitude}'.format(**vars(self))
 
 
 class GeoLocationPolygon(models.Model):

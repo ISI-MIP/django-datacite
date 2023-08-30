@@ -33,5 +33,5 @@ def validate_polygon_points(value):
                 ]
             }
         })
-    except jsonschema.exceptions.ValidationError:
-        raise ValidationError('JSON is not of the form [[lon, lat], ...] with at least 4 items.')
+    except jsonschema.exceptions.ValidationError as e:
+        raise ValidationError('JSON is not of the form [[lon, lat], ...] with at least 4 items.') from e

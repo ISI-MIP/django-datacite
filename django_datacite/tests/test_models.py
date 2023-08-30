@@ -2,8 +2,7 @@ import pytest
 
 from django.http import Http404
 
-from django_datacite.models import Resource, NameIdentifier, GeoLocation
-
+from django_datacite.models import GeoLocation, NameIdentifier, Resource
 
 resource_id = 1
 name_identifier_id = 1

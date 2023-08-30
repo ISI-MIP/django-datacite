@@ -50,7 +50,8 @@ def export_resource(resource):
     # contributors
     contributors = resource.contributor_set.all()
     if contributors:
-        data['contributors'] = [export_name(contributor.name, contributor.contributor_type) for contributor in contributors]
+        data['contributors'] = [export_name(contributor.name, contributor.contributor_type)
+                                for contributor in contributors]
 
     # dates
     dates = resource.dates.all()
@@ -72,7 +73,8 @@ def export_resource(resource):
     # related identifiers
     related_identifiers = resource.relatedidentifier_set.all()
     if related_identifiers:
-        data['relatedIdentifiers'] = [export_related_identifiers(related_identifier) for related_identifier in related_identifiers]
+        data['relatedIdentifiers'] = [export_related_identifiers(related_identifier)
+                                      for related_identifier in related_identifiers]
 
     # size
     if resource.size:
@@ -113,7 +115,8 @@ def export_resource(resource):
     # funding reference
     funding_references = resource.fundingreference_set.all()
     if funding_references:
-        data['fundingReferences'] = [export_funding_references(funding_reference) for funding_reference in funding_references]
+        data['fundingReferences'] = [export_funding_references(funding_reference)
+                                     for funding_reference in funding_references]
 
     # related items
     related_items = resource.relateditem_set.all()
@@ -261,7 +264,7 @@ def export_geo_location(geo_location):
             }
         })
     if geo_location_polygons:
-        data['geoLocationPolygons'] = [geo_location_polygon for geo_location_polygon in geo_location_polygons]
+        data['geoLocationPolygons'] = list(geo_location_polygons)
 
     return data
 
@@ -354,6 +357,7 @@ def export_related_item(related_item):
     # contributors
     contributors = related_item.item.contributor_set.all()
     if contributors:
-        data['contributors'] = [export_name(contributor.name, contributor.contributor_type) for contributor in contributors]
+        data['contributors'] = [export_name(contributor.name, contributor.contributor_type)
+                                for contributor in contributors]
 
     return data

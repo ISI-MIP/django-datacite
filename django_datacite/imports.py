@@ -3,11 +3,27 @@ import os
 
 from django.utils.dateparse import parse_date
 
-from .models import (AlternateIdentifier, Contributor, Creator, Date,
-                     Description, FundingReference, GeoLocation,
-                     GeoLocationBox, GeoLocationPoint, GeoLocationPolygon,
-                     Identifier, Name, NameIdentifier, RelatedIdentifier,
-                     RelatedItem, Resource, Rights, Subject, Title)
+from .models import (
+    AlternateIdentifier,
+    Contributor,
+    Creator,
+    Date,
+    Description,
+    FundingReference,
+    GeoLocation,
+    GeoLocationBox,
+    GeoLocationPoint,
+    GeoLocationPolygon,
+    Identifier,
+    Name,
+    NameIdentifier,
+    RelatedIdentifier,
+    RelatedItem,
+    Resource,
+    Rights,
+    Subject,
+    Title,
+)
 from .utils import get_settings
 
 logger = logging.getLogger(__name__)
@@ -170,7 +186,8 @@ def import_resource(resource_instance, data):
                         'order': order
                     }
                 )
-                logger.info('AlternateIdentifier="%s" %s', alternate_identifier_instance, 'created' if created else 'updated')
+                logger.info('AlternateIdentifier="%s" %s',
+                            alternate_identifier_instance, 'created' if created else 'updated')
 
     # relatedIdentifiers
     related_identifier_nodes = data.get('relatedIdentifiers')
@@ -200,7 +217,8 @@ def import_resource(resource_instance, data):
                             'resource_type_general': resource_type_general
                         }
                     )
-                    logger.info('RelatedIdentifier="%s" %s', related_identifier_instance, 'created' if created else 'updated')
+                    logger.info('RelatedIdentifier="%s" %s',
+                                related_identifier_instance, 'created' if created else 'updated')
 
     # rightsList
     right_list_node = data.get('rightsList')
@@ -251,7 +269,8 @@ def import_resource(resource_instance, data):
                         'award_title': funding_reference_node.get('awardTitle', '')
                     }
                 )
-                logger.info('FundingReference="%s" %s', funding_reference_instance, 'created' if created else 'updated')
+                logger.info('FundingReference="%s" %s',
+                            funding_reference_instance, 'created' if created else 'updated')
 
     # related_items
     related_item_nodes = data.get('relatedItems')

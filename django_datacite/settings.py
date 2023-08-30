@@ -183,11 +183,16 @@ DATACITE_RELATION_TYPES = (
 
 DATACITE_DEFAULT_RIGHTS_IDENTIFIER = 'CC0-1.0'
 DATACITE_RIGHTS_IDENTIFIERS = (
-    ('CC0-1.0', _('CC0 1.0 Universal Public Domain Dedication')),
-    ('CC-BY-4.0', _('Creative Commons Attribution 4.0 International (CC BY 4.0)')),
-    ('CC-BY-SA-4.0', _('Creative Commons Attribution Share Alike 4.0 International (CC BY-SA 4.0)')),
-    ('CC-BY-NC-4.0', _('Creative Commons Attribution Non Commercial 4.0 International (CC BY-NC 4.0)')),
-    ('CC-BY-NC-SA-4.0', _('Creative Commons Attribution Non Commercial Share Alike 4.0 International (CC BY-NC-SA 4.0)')),
+    ('CC0-1.0',
+        _('CC0 1.0 Universal Public Domain Dedication')),
+    ('CC-BY-4.0',
+        _('Creative Commons Attribution 4.0 International (CC BY 4.0)')),
+    ('CC-BY-SA-4.0',
+        _('Creative Commons Attribution Share Alike 4.0 International (CC BY-SA 4.0)')),
+    ('CC-BY-NC-4.0',
+        _('Creative Commons Attribution Non Commercial 4.0 International (CC BY-NC 4.0)')),
+    ('CC-BY-NC-SA-4.0',
+        _('Creative Commons Attribution Non Commercial Share Alike 4.0 International (CC BY-NC-SA 4.0)')),
 )
 
 DATACITE_RIGHTS_IDENTIFIER_URIS = {

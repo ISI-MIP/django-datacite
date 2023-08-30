@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 
 from django_datacite.imports import import_resource
-from django_datacite.models import Resource, Name, Identifier, Subject
+from django_datacite.models import Identifier, Name, Resource, Subject
 
 resource_id = 1
 

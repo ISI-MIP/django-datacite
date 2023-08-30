@@ -1,6 +1,5 @@
 import json
 
-import requests
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
@@ -10,13 +9,31 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
 from django.utils.translation import gettext as _
 
+import requests
+
 from .exports import export_resource
 from .imports import import_resource
-from .models import (AlternateIdentifier, Contributor, Creator, Date,
-                     Description, FundingReference, GeoLocation,
-                     GeoLocationBox, GeoLocationPoint, GeoLocationPolygon,
-                     Identifier, Name, NameIdentifier, RelatedIdentifier,
-                     RelatedItem, Resource, Rights, Subject, Title)
+from .models import (
+    AlternateIdentifier,
+    Contributor,
+    Creator,
+    Date,
+    Description,
+    FundingReference,
+    GeoLocation,
+    GeoLocationBox,
+    GeoLocationPoint,
+    GeoLocationPolygon,
+    Identifier,
+    Name,
+    NameIdentifier,
+    RelatedIdentifier,
+    RelatedItem,
+    Resource,
+    Rights,
+    Subject,
+    Title,
+)
 from .renderers import XMLRenderer
 from .utils import render_bibtex
 
@@ -184,8 +201,8 @@ class ImportForm(forms.Form):
         elif cleaned_data.get('file'):
             try:
                 cleaned_data['data'] = json.load(cleaned_data['file'])
-            except json.JSONDecodeError:
-                raise ValidationError(_('Please provide a valid JSON.'))
+            except json.JSONDecodeError as e:
+                raise ValidationError(_('Please provide a valid JSON.')) from e
 
         elif cleaned_data.get('url'):
             response = requests.get(cleaned_data['url'])
@@ -193,8 +210,8 @@ class ImportForm(forms.Form):
 
             try:
                 cleaned_data['data'] = response.json()
-            except json.JSONDecodeError:
-                raise ValidationError(_('Please provide a valid JSON.'))
+            except json.JSONDecodeError as e:
+                raise ValidationError(_('Please provide a valid JSON.')) from e
 
         else:
             raise ValidationError(_('Please provide a file OR a URL.'))
@@ -202,7 +219,7 @@ class ImportForm(forms.Form):
 
 # Inlines
 
-class NoExtraInlineMixin(object):
+class NoExtraInlineMixin:
     extra = 0
 
 
@@ -334,17 +351,23 @@ class ResourceAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-            path('<int:pk>/export/<str:format>/', self.admin_site.admin_view(self.datacite_resource_export),
+            path('<int:pk>/export/<str:format>/',
+                 self.admin_site.admin_view(self.datacite_resource_export),
                  name='datacite_resource_export'),
-            path('import/', self.admin_site.admin_view(self.datacite_resource_import),
+            path('import/',
+                 self.admin_site.admin_view(self.datacite_resource_import),
                  name='datacite_resource_import'),
-            path('<int:pk>/import/', self.admin_site.admin_view(self.datacite_resource_import),
+            path('<int:pk>/import/',
+                 self.admin_site.admin_view(self.datacite_resource_import),
                  name='datacite_resource_import'),
-            path('<int:pk>/copy/', self.admin_site.admin_view(self.datacite_resource_copy),
+            path('<int:pk>/copy/',
+                 self.admin_site.admin_view(self.datacite_resource_copy),
                  name='datacite_resource_copy'),
-            path('<int:pk>/validate/', self.admin_site.admin_view(self.datacite_resource_validate),
+            path('<int:pk>/validate/',
+                 self.admin_site.admin_view(self.datacite_resource_validate),
                  name='datacite_resource_validate'),
-            ] + super().get_urls()
+            *super().get_urls()
+        ]
 
     def datacite_resource_export(self, request, pk=None, format=None):
         resource = get_object_or_404(Resource, id=pk)
@@ -352,15 +375,15 @@ class ResourceAdmin(admin.ModelAdmin):
         if format == 'json':
             resource_json = json.dumps(export_resource(resource), indent=2)
             response = HttpResponse(resource_json, content_type="application/json")
-            response['Content-Disposition'] = 'filename="{}.json"'.format(resource.identifier)
+            response['Content-Disposition'] = f'filename="{resource.identifier}.json"'
         elif format == 'xml':
             resource_xml = XMLRenderer().render(export_resource(resource))
             response = HttpResponse(resource_xml, content_type="application/xml")
-            response['Content-Disposition'] = 'filename="{}.xml"'.format(resource.identifier)
+            response['Content-Disposition'] = f'filename="{resource.identifier}.xml"'
         elif format == 'bibtex':
             resource_bibtex = render_bibtex(resource)
             response = HttpResponse(resource_bibtex, content_type='application/x-bibtex')
-            response['Content-Disposition'] = 'filename="{}.bib"'.format(resource.identifier)
+            response['Content-Disposition'] = f'filename="{resource.identifier}.bib"'
         else:
             raise Http404
 
