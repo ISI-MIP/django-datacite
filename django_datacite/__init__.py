@@ -1,3 +1,3 @@
-VERSION = __version__ = '1.0.0'
+VERSION = __version__ = '1.0.1'
 
 default_app_config = 'django_datacite.apps.DataciteConfig'
