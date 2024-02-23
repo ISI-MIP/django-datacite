@@ -404,7 +404,12 @@ def import_name(name_node):
     given_name = name_node.get('givenName')
     family_name = name_node.get('familyName')
     try:
-        name_instance = Name.objects.get(name_identifiers__in=name_identifier_instances)
+        existing_name_identifier_instances = [
+            name_identifier_instance
+            for name_identifier_instance in name_identifier_instances
+            if name_identifier_instance.id is not None
+        ]
+        name_instance = Name.objects.get(name_identifiers__in=existing_name_identifier_instances)
         logger.info('Name="%s" found by NameIdentifier', name_instance)
     except Name.DoesNotExist:
         if name is None:
