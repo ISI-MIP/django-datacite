@@ -7,7 +7,7 @@ from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 
-from .utils import get_display_name, get_settings, render_citation
+from .utils import get_display_name, get_settings, render_citation, update_version
 from .validators import validate_polygon_points, validate_resource
 
 
@@ -180,6 +180,51 @@ class Resource(models.Model):
                 first_page=related_item.first_page,
                 last_page=related_item.last_page,
                 edition=related_item.edition
+            ).save()
+
+        return resource
+
+    def create_new_version(self):
+        resource = self.copy()
+
+        if self.identifier is not None:
+            # create the new identifier
+            identifier = Identifier(
+                identifier=update_version(self.identifier.identifier),
+                identifier_type=self.identifier.identifier_type
+            )
+            identifier.save()
+
+            # update the version if there is one set
+            if self.version:
+                resource.version = update_version(self.version)
+
+            # store the identifier in the resource
+            resource.identifier = identifier
+            resource.save()
+
+            # remove any old IsNewVersionOf related identifier for the new resource
+            RelatedIdentifier.objects.filter(
+                resource=resource,
+                relation_type='IsNewVersionOf',
+            ).delete()
+
+            # create a related identifer on the new resource for the current resource
+            RelatedIdentifier(
+                resource=resource,
+                identifier=self.identifier,
+                order=get_settings('DATACITE_NEW_VERSION_ORDER'),
+                relation_type='IsNewVersionOf',
+                resource_type_general='Dataset'
+            ).save()
+
+            # create a related identifer on the current resource for the new resource
+            RelatedIdentifier(
+                resource=self,
+                identifier=identifier,
+                order=get_settings('DATACITE_PREVIOUS_VERSION_ORDER'),
+                relation_type='IsPreviousVersionOf',
+                resource_type_general='Dataset'
             ).save()
 
         return resource

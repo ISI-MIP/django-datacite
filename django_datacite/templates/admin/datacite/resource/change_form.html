@@ -33,6 +33,12 @@
         </a>
     </li>
     <li>
+        <a href="{% url 'admin:datacite_resource_create_new_version' original.pk %}"
+           title="{% trans 'Create a new version of this resource.' %}">
+            {% trans 'New version' %}
+        </a>
+    </li>
+    <li>
         <a href="{% url 'admin:datacite_resource_validate' original.pk %}"
            title="{% trans 'Validate this resource.' %}">
             {% trans 'Validate' %}

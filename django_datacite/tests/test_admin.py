@@ -262,6 +262,32 @@ def test_resource_copy_post_back(db, client):
     assert Resource.objects.count() == 2
 
 
+def test_resource_create_new_version_get(db, client):
+    client.login(username='admin', password='admin')
+
+    url = reverse('admin:datacite_resource_create_new_version', args=[resource_id])
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+def test_resource_create_new_version_post(db, client):
+    client.login(username='admin', password='admin')
+
+    url = reverse('admin:datacite_resource_create_new_version', args=[resource_id])
+    response = client.post(url, {'_send': True})
+    assert response.status_code == 302
+    assert Resource.objects.count() == 3
+
+
+def test_resource_create_new_version_post_back(db, client):
+    client.login(username='admin', password='admin')
+
+    url = reverse('admin:datacite_resource_create_new_version', args=[resource_id])
+    response = client.post(url, {'_back': True})
+    assert response.status_code == 302
+    assert Resource.objects.count() == 2
+
+
 def test_resource_validate_get(db, client):
     client.login(username='admin', password='admin')
 

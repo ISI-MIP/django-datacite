@@ -363,6 +363,9 @@ class ResourceAdmin(admin.ModelAdmin):
             path('<int:pk>/copy/',
                  self.admin_site.admin_view(self.datacite_resource_copy),
                  name='datacite_resource_copy'),
+            path('<int:pk>/create-new-version/',
+                 self.admin_site.admin_view(self.datacite_resource_create_new_version),
+                 name='datacite_resource_create_new_version'),
             path('<int:pk>/validate/',
                  self.admin_site.admin_view(self.datacite_resource_validate),
                  name='datacite_resource_validate'),
@@ -424,6 +427,19 @@ class ResourceAdmin(admin.ModelAdmin):
                 return redirect('admin:datacite_resource_change', object_id=resource_copy.id)
 
         return render(request, 'admin/datacite/resource/copy.html')
+
+    def datacite_resource_create_new_version(self, request, pk=None):
+        resource = get_object_or_404(Resource, id=pk)
+
+        if request.method == 'POST':
+            if '_back' in request.POST:
+                return redirect('admin:datacite_resource_change', object_id=pk)
+
+            elif '_send' in request.POST:
+                resource_copy = resource.create_new_version()
+                return redirect('admin:datacite_resource_change', object_id=resource_copy.id)
+
+        return render(request, 'admin/datacite/resource/create_new_version.html')
 
     def datacite_resource_validate(self, request, pk=None):
         resource = get_object_or_404(Resource, id=pk)
