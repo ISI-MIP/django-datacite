@@ -434,7 +434,7 @@ def import_name(name_node):
     # update name identifiers
     for name_identifier_instance in name_identifier_instances:
         try:
-            name_identifier_instance.name
+            name_identifier_instance.name  # noqa: B018
         except Name.DoesNotExist:
             name_identifier_instance.name = name_instance
             name_identifier_instance.save()
@@ -496,7 +496,7 @@ def import_geo_location(geo_location_node):
     if geo_location_point and \
             geo_location_point.get('pointLongitude') is not None and \
             geo_location_point.get('pointLatitude') is not None:
-        geo_location_point_instance, created = GeoLocationPoint.objects.update_or_create(
+        _, created = GeoLocationPoint.objects.update_or_create(
             geo_location=geo_location_instance,
             defaults={
                 'point_longitude': geo_location_point.get('pointLongitude'),
@@ -510,7 +510,7 @@ def import_geo_location(geo_location_node):
             geo_location_bbox.get('eastBoundLongitude') is not None and \
             geo_location_bbox.get('southBoundLatitude') is not None and \
             geo_location_bbox.get('northBoundLatitude') is not None:
-        geo_location_bbox_instance, created = GeoLocationBox.objects.update_or_create(
+        _, created = GeoLocationBox.objects.update_or_create(
             geo_location=geo_location_instance,
             defaults={
                 'west_bound_longitude': geo_location_bbox.get('westBoundLongitude'),
@@ -528,7 +528,7 @@ def import_geo_location(geo_location_node):
                 [point.get('pointLongitude'), point.get('pointLatitude')]
                 for point in polygon_points
             ]
-            geo_location_polygon_instance, created = GeoLocationPolygon.objects.update_or_create(
+            _, created = GeoLocationPolygon.objects.update_or_create(
                 geo_location=geo_location_instance,
                 polygon_points=polygon_points_json,
                 in_point_longitude=geo_location_polygon.get('inPolygonPoint', {}).get('pointLongitude'),

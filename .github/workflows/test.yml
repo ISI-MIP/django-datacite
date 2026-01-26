@@ -1,14 +1,23 @@
-name: pytest
+name: Test 🧪
 
-on: push
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - main
 
 jobs:
   pytest:
-    runs-on: ubuntu-22.04
+    name: Run pytest 🧪
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        python-version: ['3.8', '3.12']
+        python-version: ['3.8', '3.14']
 
     services:
       postgres:
@@ -24,32 +33,33 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v6
+    - name: Checkout repo 🛎️
+      uses: actions/checkout@v6
       with:
         persist-credentials: false
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python ${{ matrix.python-version }} 🐍
       uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install package
+    - name: Install package 📦
       run: |
         python3 -m pip install --upgrade pip setuptools
         python3 -m pip install psycopg2-binary
         python3 -m pip install -e .
         python3 -m pip install -e .[pytest]
 
-    - name: Setup environment file
+    - name: Setup environment file 🔐
       run: |
         echo "SECRET_KEY=thisisnotaverysecretkey" >> $GITHUB_ENV
         echo "DATABASE=postgresql://postgres:postgres_password@localhost/django_datacite" >> $GITHUB_ENV
 
-    - name: Run pytest
+    - name: Run pytest 🧪
       run: |
         pytest --cov
 
-    - name: Run coveralls
+    - name: Run coveralls 📊
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -59,10 +69,11 @@ jobs:
   coveralls:
     needs: pytest
     runs-on: ubuntu-latest
+
     steps:
-    - name: Run coveralls finish
+    - name: Run coveralls finish 🏁
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
-        carryforward: "3.7,3.11"
+        carryforward: "3.7,3.14"
