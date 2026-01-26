@@ -67,11 +67,12 @@ jobs:
         parallel: true
 
   coveralls:
+    name: Upload to coveralls 📊
     needs: pytest
     runs-on: ubuntu-latest
 
     steps:
-    - name: Run coveralls finish 🏁
+    - name: Upload to coveralls 📊
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -80,6 +81,7 @@ jobs:
 
   build:
     name: Build distribution 👷
+    needs: pytest
     runs-on: ubuntu-latest
 
     steps:
