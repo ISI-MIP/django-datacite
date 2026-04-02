@@ -1,10 +1,11 @@
 django-datacite
 ===============
 
-[![Latest release](https://img.shields.io/pypi/v/django-datacite.svg?style=flat)](https://pypi.python.org/pypi/django-datacite/)
-[![License](https://img.shields.io/github/license/ISI-MIP/django-datacite?style=flat)](https://github.com/rdmorganiser/django-datacite/blob/main/LICENSE)
+[![Python Version](https://img.shields.io/badge/python->=3.9-blue)](https://www.python.org/)
+[![License](https://img.shields.io/github/license/ISI-MIP/django-datacite?style=flat)](https://github.com/ISI-MIP/django-datacite/blob/main/LICENSE)
 [![CI status](https://github.com/ISI-MIP/django-datacite/actions/workflows/ci.yml/badge.svg)](https://github.com/ISI-MIP/django-datacite/actions/workflows/ci.yml)
 [![Coverage status](https://coveralls.io/repos/ISI-MIP/django-datacite/badge.svg?branch=main&service=github)](https://coveralls.io/github/ISI-MIP/django-datacite?branch=main)
+[![Latest release](https://img.shields.io/pypi/v/django-datacite.svg?style=flat)](https://pypi.python.org/pypi/django-datacite/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18376442.svg)](https://doi.org/10.5281/zenodo.18376442)
 
 A Django app to properly model the [DataCite Metadata Schema](https://schema.datacite.org/) in a relational database, with full integration into the Django admin interface. The app is *slightly* opinionated in a way to make it better usable as a DOI registration database. Names (`creators` and `contributors`) and identifiers (for the resources, but also for `alternativeIdentifiers` and `relatedIdentifiers`) are stored in separate database tables and can be reused for different resources.
