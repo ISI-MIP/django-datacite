@@ -17,11 +17,13 @@ def resource(request, identifier=None):
         resource_url = reverse('django_datacite:resource', args=[resource.identifier.identifier])
         resource_xml_url = reverse('django_datacite:resource_xml', args=[resource.identifier.identifier])
         resource_json_url = reverse('django_datacite:resource_json', args=[resource.identifier.identifier])
+        resource_admin_url = reverse('admin:datacite_resource_change', args=[resource.pk])
         return render(request, 'datacite/resource.html', {
             'resource': resource,
             'resource_absolute_uri': request.build_absolute_uri(resource_url),
             'resource_xml_absolute_uri': request.build_absolute_uri(resource_xml_url),
-            'resource_json_absolute_uri': request.build_absolute_uri(resource_json_url)
+            'resource_json_absolute_uri': request.build_absolute_uri(resource_json_url),
+            'resource_admin_absolute_uri': request.build_absolute_uri(resource_admin_url)
         })
     else:
         raise Http404
