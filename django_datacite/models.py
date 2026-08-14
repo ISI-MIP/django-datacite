@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.http import Http404
 from django.urls import NoReverseMatch, reverse
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.text import Truncator
 
@@ -226,6 +227,18 @@ class Resource(models.Model):
                 relation_type='IsPreviousVersionOf',
                 resource_type_general='Dataset'
             ).save()
+
+        # update the publication_year if there is one set
+        year = timezone.now().year
+        if resource.publication_year != year:
+            resource.publication_year = year
+            resource.save()
+
+        # update all dates if they are set
+        for date in resource.dates.all():
+            if date.date != timezone.now().date:
+                date.date = timezone.now().date()
+                date.save()
 
         return resource
 
